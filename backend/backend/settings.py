@@ -123,7 +123,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         #"NAME": os.getenv("DB_NAME"),
-        "NAME": 'CompuTienda',
+        "NAME": 'TP3',
         "USER": 'root',
         #"USER": os.getenv("DB_USER"),
        # "PASSWORD": os.getenv("DB_PASSWORD"), # obtiene la contraseña de las variables de entorno, si no esta definida el password es "". 
