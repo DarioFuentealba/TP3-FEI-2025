@@ -7,4 +7,4 @@ env/
 __pycache__/
 .Python
 db.sqlite3
-backend/settings.py
+#backend/settings.py
