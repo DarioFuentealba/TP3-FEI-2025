@@ -1,0 +1,7 @@
+@urlBase1 = http://127.0.0.1:8000/api/computacion/categoria-con-subcategorias/
+@urlBase2 = http://127.0.0.1:8000/api/computacion/todos_los_productos/
+GET {{urlBase1}}
+Content-Type: application/json
+###
+GET {{urlBase2}}
+Content-Type: application/json

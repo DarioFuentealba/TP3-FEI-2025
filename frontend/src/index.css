@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @apply bg-[#d9d9d9] text-[#000000] dark:bg-[#000000] dark:text-[#ffffff];
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+/* Estilos de Login.css */
+.icono-fondo {
+  position: absolute;
+  top: 50%;
+  left: -10%; /* un poco fuera del borde para que se vea natural */
+  transform: translateY(-50%);
+  width: 60vw; /* 60% del ancho de la pantalla */
+  height: auto;
+  opacity: 0.15; /* sutil, para no tapar el contenido */
+  z-index: 1;
+  animation: girar 40s linear infinite;
+  pointer-events: none; /* no bloquea clics sobre el formulario */
+}
+
+@keyframes girar {
+  from {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+form {
+  position: relative;
+  z-index: 2; /* asegura que quede por encima del SVG */
+}
+
+
+
+:root {
+  --color-texto: #000000;
+  --color-fondo-input: #ffffff;
+}
+
+.dark {
+  --color-texto: #00FF84;
+  --color-fondo-input: #000000;
+}
+
+
+/* Logos en login y registro */
+@keyframes hologram-spin {
+  0% {
+    transform: perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px);
+    filter: drop-shadow(0 0 10px #00ffcc) drop-shadow(0 0 20px #00ffcc);
+  }
+  25% {
+    transform: perspective(800px) rotateX(10deg) rotateY(15deg) translateY(-5px);
+    filter: drop-shadow(0 0 15px #00ffaa) drop-shadow(0 0 25px #00ffaa);
+  }
+  50% {
+    transform: perspective(800px) rotateX(0deg) rotateY(30deg) translateY(5px);
+    filter: drop-shadow(0 0 10px #00ffcc) drop-shadow(0 0 20px #00ffcc);
+  }
+  75% {
+    transform: perspective(800px) rotateX(-10deg) rotateY(15deg) translateY(-3px);
+    filter: drop-shadow(0 0 15px #00ffaa) drop-shadow(0 0 25px #00ffaa);
+  }
+  100% {
+    transform: perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px);
+    filter: drop-shadow(0 0 10px #00ffcc) drop-shadow(0 0 20px #00ffcc);
+  }
+}
+
+.animate-hologram {
+  animation: hologram-spin 12s ease-in-out infinite;
+  transform-style: preserve-3d;
+  filter: invert(1) hue-rotate(120deg) drop-shadow(0 0 15px #00ffcc);
+}
+
+
+/* Pagina Preguntas Frecuentes */
+.perspective {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.rotate-y-0 {
+  transform: rotateY(0deg);
+}
+
+.-rotate-y-180 {
+  transform: rotateY(-180deg);
+}
