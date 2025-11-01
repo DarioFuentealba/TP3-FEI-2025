@@ -352,6 +352,12 @@ b) python -m pip install djangorestframework djangorestframework-simplejwt
 ![Ejemplo](./src/assets/Imagenes/ImagenesREADME/LucideReact/01.png)  
   
   
+# <p align="center">Instalar emailJS-com</p>  
+  
+1. En la terminal ejecuto npm install emailjs-com (frontend)  
+![Ejemplo](./src/assets/Imagenes/ImagenesREADME/emailJS/01.png)  
+  
+  
 
 
 

@@ -10,12 +10,11 @@ export default function NotebookPage() {
         { name: "stock", label: "Stock", type: "number" },
         { name: "fabricante", label: "Fabricante", type: "text" },
         { name: "oferta", label: "Oferta", type: "checkbox" },
-        {name:"tipo",label:"Tipo",type:"text"},
         {name:"envio_gratis",label:"Envio Gratis?",type:"checkbox"},
-        {name:"gamer",label:"Gamer?",type:"checkbox"},
         {name:"teclado_extra",label:"Teclado Extra?",type:"checkbox"},
         {name:"usos",label:"Uso",type:"text"},
         {name:"almacenamiento",label:"Almacenamiento y Tipo",type:"text"},
+        {name:"sistema_operativo",label:"Sistema Operativo",type:"text"},
         {name:"pantalla_tamanio",label:"Tamaño Pantalla",type:"text"},
         {name:"pantalla_tactil",label:"Pantalla Tactil ? ",type:"checkbox"},
         {name:"pantalla_led",label:"Pantalla LED ?",type:"checkbox"},
@@ -26,9 +25,9 @@ export default function NotebookPage() {
           name: "subcategoria",
           label: "Subcategoría",
           type: "select",
-          optionsResource: "subcategorias", // <- Se cargan automáticamente desde la API
+          optionsResource: "sub_categorias", // <- Se cargan automáticamente desde la API
         },
-        { name: "foto", label: "Foto", type: "file" },
+        { name: "foto", label: "Foto", type: "file" ,accept:"image/*"},
       ]}
     />
   );

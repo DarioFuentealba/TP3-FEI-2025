@@ -69,6 +69,12 @@ export const getUsuarios = async () => {
   return api.get("/api/usuario/usuarios/");
 };
 
+// Obtener los datos del usuario logueado
+export const getUsuarioActual = async () => {
+  return api.get("/api/usuario/adm/").then((res) => res.data);
+};
+
+
 
 // Logout: Elimine los tokens
 export const logoutUser=()=>{

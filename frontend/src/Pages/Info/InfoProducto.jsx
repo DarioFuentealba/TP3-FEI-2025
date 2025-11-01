@@ -16,6 +16,9 @@ const InfoProducto = () => {
   const [loading, setLoading] = useState(true);
   const [imagenPrincipal, setImagenPrincipal] = useState("");
   const [esFav, setEsFav] = useState(false);
+  const [costoEnvio, setCostoEnvio] = useState(0);
+  const [precioTotal, setPrecioTotal] = useState(0);
+
 
   // Map para obtener la subcategoria correcta en la API
   const mapeoModelos = {
@@ -41,7 +44,7 @@ const InfoProducto = () => {
     Object.keys(mapeoModelos).find((key) => mapeoModelos[key] === value);
 
   const SubCategoria = getKeyFromValue(subcategoria);
-  console.log("subcategoria: desde info =>", SubCategoria, "ID: ", id);
+  //console.log("subcategoria: desde info =>", SubCategoria, "ID: ", id);
 
   const camposPorCategoria = {
     //Computadoras
@@ -79,7 +82,7 @@ const camposMostrar = camposPorCategoria[subCatKey] || ["fabricante"];
           `http://localhost:8000/api/computacion/${SubCategoria}/${id}/`
         );
         setProducto(res.data);
-        console.log("Producto cargado:", res.data);
+        //console.log("Producto cargado:", res.data);
         setImagenPrincipal(res.data.foto1 || "");
         setEsFav(esFavorito(res.data.id));
       }catch (err){
@@ -91,6 +94,37 @@ const camposMostrar = camposPorCategoria[subCatKey] || ["fabricante"];
 
     fetchProducto();
   }, [SubCategoria, id]);
+
+  // SECCION DE COSTO DE ENVIO 
+  useEffect(() => {
+  if (!producto) return;
+
+  const fetchEnvio = async () => {
+    try {
+      const token = localStorage.getItem("access"); // 👈 lo sacamos de localStorage
+      if (!token) {
+        console.warn("No hay token JWT guardado");
+        return;
+      }
+
+      const res = await axios.get(
+        `http://localhost:8000/api/envios/${producto.id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // 👈 este header es esencial
+          },
+        }
+      );
+
+      setCostoEnvio(res.data.costo_envio);
+      setPrecioTotal(res.data.precio_total);
+    } catch (err) {
+      console.error("Error al calcular envío:", err);
+    }
+  };
+
+  fetchEnvio();
+}, [producto]);
 
   if(loading)
     return(
@@ -113,29 +147,54 @@ const camposMostrar = camposPorCategoria[subCatKey] || ["fabricante"];
     .filter((key) => key.toLowerCase().startsWith("foto") && producto[key])
     .map((key) => producto[key]);
 
+  //const handleAgregarAlCarrito = () => {
+    //console.log('Antes de agregar al carrito=> ',producto.nombre);
+    //agregarAlCarrito(producto, 1, subcategoria.toLowerCase());
+  //   toast.success(`${producto.nombre} agregado al carrito!`);
+  // };
 
-const handleAgregarAlCarrito = () => {
-  // Buscar si el producto ya está en el carrito
-  const itemEnCarrito = carrito.find(item => item.id === producto.id);
+const handleAgregarAlCarrito = async () => {
+  try {
+    const token = localStorage.getItem("access");
+    const res = await axios.get(`http://localhost:8000/api/envios/${producto.id}/`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-  const cantidadActual = itemEnCarrito ? itemEnCarrito.cantidad : 0;
+    const costoEnvioProducto = res.data.costo_envio;
 
-  if (cantidadActual + 1 > producto.stock) {
-    // Limitar según stock
-    toast.error(`No puedes agregar más de ${producto.stock} unidades de este producto.`);
-    return;
+    // Guardamos en localStorage
+    let enviosGuardados = JSON.parse(localStorage.getItem("carrito_envios") || "{}");
+    enviosGuardados[producto.id] = costoEnvioProducto;
+    localStorage.setItem("carrito_envios", JSON.stringify(enviosGuardados));
+
+    // Mandamos el JSON de envíos en el body del POST 👇
+    await axios.post(
+      "http://localhost:8000/api/carrito/agregar/",
+      {
+        modelo: subcategoria.toLowerCase(),
+        producto_id: producto.id,
+        cantidad: 1,
+        carrito_envios: enviosGuardados, // 👈 esto es lo nuevo
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    toast.success(`${producto.nombre} agregado al carrito!`);
+  } catch (err) {
+    console.error(err);
+    toast.error("No se pudo calcular el costo de envío");
   }
-
-  agregarAlCarrito(producto, 1, subcategoria.toLowerCase());
-  toast.success(`${producto.nombre} agregado al carrito!`);
 };
+
 
   const handleToggleFavorito = () => {
     const nuevoEstado = toggleFavorito(producto);
     setEsFav(nuevoEstado);
   };
 
-  console.log("ver lo de PC ESCRITORIO", mapeoModelos);
+  //console.log("ver lo de PC ESCRITORIO", mapeoModelos);
   return(
     <div>
       <h1
@@ -146,61 +205,53 @@ const handleAgregarAlCarrito = () => {
         {producto.nombre}
       </h1>
 
-    <div className="max-w-[1300px] mx-auto mt-8 pt-0 px-4 pb-4 flex flex-col md:flex-row gap-6 items-start text-white">
+      <div className="max-w-[1300px] mx-auto mt-8 pt-0 px-4 pb-4 flex flex-col md:flex-row gap-6 items-start text-white">
 
-      {/* Columna miniaturas */}
-      <div className="flex md:flex-col gap-2 overflow-y-auto max-h-[500px] w-24 items-start pt-0 px-2  
-      bg-transparent"
-      >
-        {imagenes.map((imgSrc, idx) => (
-          <img
-            key={idx}
-            src={imgSrc}
-            alt={`${producto.nombre} miniatura ${idx + 1}`}
-            className={`w-20 h-20 object-contain cursor-pointer border-2 rounded transition ${
-              imagenPrincipal === imgSrc
-                ? "border-3 border-[#000000] shadow-lg dark:border-[#00FF84] dark:shadow-[0_0_15px_#00FF84]"
-                : "border-3 border-[#ffffff] hover:border-gray-300 dark:border-[#000000]"
-            }`}
-            onMouseEnter={() => setImagenPrincipal(imgSrc)}
-          />
-        ))}
-      </div>
-
-      {/* Columna imagen principal */}
-      <div className="flex-1 relative rounded-lg flex flex-col items-start justify-start pt-0 px-2
+        {/* Columna miniaturas */}
+        <div className="flex md:flex-col gap-2 overflow-y-auto max-h-[500px] w-24 items-start pt-0 px-2  
         bg-transparent"
-      >
-        {imagenPrincipal && (
-          <img
-            src={imagenPrincipal}
-            alt={producto.nombre}
-            className="w-full h-auto max-h-[600px] object-contain rounded-lg shadow-lg"
-          />
-        )}
-
-        {/* Corazón */}
-        <div
-          className="absolute top-2 right-2 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer bg-gray-900"
-          onClick={handleToggleFavorito}
         >
-          <IconoCorazon activo={esFav} />
+          {imagenes.map((imgSrc, idx) => (
+            <img
+              key={idx}
+              src={imgSrc}
+              alt={`${producto.nombre} miniatura ${idx + 1}`}
+              className={`w-20 h-20 object-contain cursor-pointer border-2 rounded transition ${
+                imagenPrincipal === imgSrc
+                  ? "border-3 border-[#000000] shadow-lg dark:border-[#00FF84] dark:shadow-[0_0_15px_#00FF84]"
+                  : "border-3 border-[#ffffff] hover:border-gray-300 dark:border-[#000000]"
+              }`}
+              onMouseEnter={() => setImagenPrincipal(imgSrc)}
+            />
+          ))}
         </div>
-      </div>
 
-      {/* Columna detalles */}
-      <div className="flex-1 flex flex-col gap-4 p-4 rounded-lg
-        bg-[#1F2937]
-        dark:bg-transparent"
-      >
-
-        <p
-          className="text-3xl font-semibold text-center
-        text-[#ffffff]
-        dark:text-[#00FF84]"
+        {/* Columna imagen principal */}
+        <div className="flex-1 relative rounded-lg flex flex-col items-start justify-start pt-0 px-2
+          bg-transparent"
         >
-          <Precio precioARS={producto.precio} />
-        </p>
+          {imagenPrincipal && (
+            <img
+              src={imagenPrincipal}
+              alt={producto.nombre}
+              className="w-full h-auto max-h-[600px] object-contain rounded-lg shadow-lg"
+            />
+          )}
+
+          {/* Corazón */}
+          <div
+            className="absolute top-2 right-2 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer bg-gray-900"
+            onClick={handleToggleFavorito}
+          >
+            <IconoCorazon activo={esFav} />
+          </div>
+        </div>
+
+        {/* Columna detalles */}
+        <div className="flex-1 flex flex-col gap-4 p-4 rounded-lg
+          bg-[#1F2937]
+          dark:bg-transparent"
+        >
 
         {producto.oferta && (
           <span className="font-bold text-3xl text-center text-red-600">
@@ -226,19 +277,42 @@ const handleAgregarAlCarrito = () => {
             </React.Fragment>
           ))}
         </div>
+        
+        <p
+          className="text-3xl font-semibold text-center
+        text-[#FFFF14]
+        dark:text-[#FF148A]"
+        >
+          <Precio precioARS={producto.precio} />
+        </p>
 
-        <div className="flex gap-4 mt-auto justify-center">
-          <button
-            className="bg-[#ffffff] text-[#000000] font-bold px-6 py-3 rounded-full border-2 border-[#ffffff] hover:bg-[#1F2937] hover:text-[#ffffff] transition transform hover:scale-105 hover:shadow-[0_0_15px_#ffffff]
-            dark:bg-[#000000] dark:text-[#00FF84] dark:border-[#00FF84] dark:hover:bg-[#00FF84] dark:hover:text-black dark:hover:shadow-[0_0_15px_#00FF84]"
-            onClick={handleAgregarAlCarrito}
-          >
-            Agregar al carrito
-          </button>
+        {producto && (
+          <>
+            {producto.envio_gratis === 1 || producto.envio_gratis === "1" ? (
+              <span className="font-bold text-3xl text-center text-[#FF073A]">
+                ¡Envío gratis!
+              </span>
+            ) : (
+              <p className="text-xl font-semibold text-[#FFFF14] dark:text-[#FF148A]">
+                Costo de envío: {costoEnvio !== null ? <Precio precioARS={Number(costoEnvio.toFixed(2))} /> : "No disponible"}
+              </p>
+            )}
+          </>
+        )}
+
+
+          <div className="flex gap-4 mt-auto justify-center">
+            <button
+              className="bg-[#ffffff] text-[#000000] font-bold px-6 py-3 rounded-full border-2 border-[#ffffff] hover:bg-[#1F2937] hover:text-[#ffffff] transition transform hover:scale-105 hover:shadow-[0_0_15px_#ffffff]
+              dark:bg-[#000000] dark:text-[#00FF84] dark:border-[#00FF84] dark:hover:bg-[#00FF84] dark:hover:text-black dark:hover:shadow-[0_0_15px_#00FF84]"
+              onClick={handleAgregarAlCarrito}
+            >
+              Agregar al carrito
+            </button>
+          </div>
         </div>
-      </div>
 
-    </div>
+      </div>
     </div>
 
   );

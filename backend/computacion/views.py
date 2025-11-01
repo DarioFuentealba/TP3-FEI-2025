@@ -17,6 +17,9 @@ from rest_framework.response import Response
 from .mixins import ComprarMixin
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 # Create your views here.
 
@@ -132,3 +135,12 @@ def listar_todos_los_productos(request):
     return Response(serializer.data)
 
 
+class SoloAdminView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # Verificar si el usuario es administrador
+        if not request.user.is_staff:
+            return Response({"error": "No tienes permiso para acceder"}, status=403)
+        
+        return Response({"mensaje": "Bienvenido administrador"})

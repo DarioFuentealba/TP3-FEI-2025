@@ -54,7 +54,7 @@ const TarjetaProducto = ({ producto, label }) => {
 
     //BUSCA EL NOMBRE DE LA SUBCATEGORIA
     const clickTarjeta = (producto) => {
-        console.log("🧩 Producto:", producto);
+       // console.log("🧩 Producto:", producto);
 
         const subcategoriaNombre = mapeoPorId[producto.subcategoria];
 

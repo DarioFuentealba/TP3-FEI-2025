@@ -6,14 +6,10 @@ export const ROUTES = {
     login:"/login",
     register:"/register",
     perfil:"/perfil/:id",
+    admin:'/administrador/:id',
 
     //Header
-        ofertas: "ofertas",
-
-
-
-
-        
+        ofertas: "ofertas",     
         //Computadoras
         //Uso de PC
         //Hardware

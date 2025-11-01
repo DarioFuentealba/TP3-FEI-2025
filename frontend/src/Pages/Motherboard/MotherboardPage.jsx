@@ -14,9 +14,9 @@ export default function MotherboardPage() {
           name: "subcategoria",
           label: "Subcategoría",
           type: "select",
-          optionsResource: "subcategorias", // <- Se cargan automáticamente desde la API
+          optionsResource: "sub_categorias", // <- Se cargan automáticamente desde la API
         },
-        { name: "foto", label: "Foto", type: "file" },
+        { name: "foto", label: "Foto", type: "file",accept:"image/*" },
         { name: "memoria", label: "Memoria", type: "text" },
         { name: "socket", label: "Socket", type: "text" },
         { name: "puerto_sata", label: "Puerto_Sata", type: "text" },

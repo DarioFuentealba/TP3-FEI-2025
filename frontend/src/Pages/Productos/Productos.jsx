@@ -82,7 +82,7 @@ const Productos = () => {
     //     return false;
     // });
     
-    console.log("🔎 Subactegoria LAbel :", subcategoriaLabel);
+    //console.log("🔎 Subactegoria LAbel :", subcategoriaLabel);
    //console.log("✅ Productos filtrados:", productosFiltrados);
 
     // ⚠️ Si no hay productos

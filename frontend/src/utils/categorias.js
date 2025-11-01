@@ -49,16 +49,15 @@ export function useCategorias() {
         microImg,       // id: 4 - Cpu
         placaVideoImg,  // id: 5 - Gpu
         ramImg,         // id: 6 - Ram
-        coolerImg,      // id: 7 - Cooler
         discoImg,       // id: 8 - Disco
         fuenteImg,       // id: 9 - Fuente
         gabineteImg,    // id: 10 - Gabinete
-        placaWifiImg   // id: 16 - placa_wifi
+        placaWifiImg,   // id: 16 - placa_wifi
       ] 
     },
     { 
       Perifericos: perifericosImg, 
-      subcategorias: [tecladoImg, monitorImg, mouseImg] 
+      subcategorias: [coolerImg,tecladoImg, monitorImg, mouseImg] 
     },
     { 
       Software: softwareImg, 

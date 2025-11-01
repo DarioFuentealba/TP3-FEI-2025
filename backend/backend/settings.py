@@ -67,6 +67,8 @@ INSTALLED_APPS = [
 
     'carrito', #Carrito
     'productos',
+    'servicios_externos',
+    'envios',
 ]
 
 
@@ -123,7 +125,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         #"NAME": os.getenv("DB_NAME"),
-        "NAME": 'TP3',
+        "NAME": 'tp3',
         "USER": 'root',
         #"USER": os.getenv("DB_USER"),
        # "PASSWORD": os.getenv("DB_PASSWORD"), # obtiene la contraseña de las variables de entorno, si no esta definida el password es "". 
@@ -190,15 +192,15 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES':(
+    'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-    )
+    ),
 }
 
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),   # token válido por 60 minutos
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=600),   # token válido por 60 minutos
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),      # token de refresco válido 7 días
     'ROTATE_REFRESH_TOKENS': False,                   # Si True, genera nuevo refresh al renovar
     'BLACKLIST_AFTER_ROTATION': True,                 # Invalida el anterior si se rota

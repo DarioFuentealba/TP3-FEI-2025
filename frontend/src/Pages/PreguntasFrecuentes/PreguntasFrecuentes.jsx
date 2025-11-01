@@ -6,7 +6,7 @@ const PreguntasFrecuentes = () => {
         {
             titulo: "Retiros",
             preguntas: [
-                { pregunta: "¿Cómo funciona el retiro en el local?", respuesta: "Power Tech ofrece la opción de retiro sin costo en Calle Falsa 123, Floresta (CABA) Lunes a Viernes de 9 a 17hs - Sábados 10 a 14hs." },
+                { pregunta: "¿Cómo funciona el retiro en el local?", respuesta: "Power Tech ofrece la opción de retiro sin costo en Calle Falsa 123, Neuquén Lunes a Viernes de 9 a 17hs - Sábados 10 a 14hs." },
                 { pregunta: "¿Cuándo puedo retirar mi pedido?", respuesta: "Cuando recibas el correo de confirmación de retiro." },
                 { pregunta: "Quién puede retirar mi pedido?", respuesta: "El titular de la compra o una persona autorizada. En este caso,informar previamente el nombre completo, DNI y número de contacto de la persona autorizada." },
                 { pregunta: "¿Puedo cambiar mi punto de retiro?", respuesta: "No, sólo tenemos 1 local donde pueden retirarse los productos." },

@@ -11,6 +11,7 @@ import Usos from "./Pages/Usos/Usos";
 import Hardware from "./Pages/Hardware/Hardware";
 import Perifericos from "./Pages/Perifericos/Perifericos";
 import Software from "./Pages/Software/Software";
+import Encuesta from "./Pages/Encuesta/Encuesta";
 import Info from "./Pages/Info/Info";
 import Favoritos from "./Pages/Favoritos/Favoritos";
 import Categoria from "./Pages/Categoria/Categoria";
@@ -27,13 +28,13 @@ import Register from "./Pages/Login/Register";
 
 import Subcategorias from "./Pages/Subcategoria/Subcategoria";
 import Productos from "./Pages/Productos/Productos";
-import ProductoDetalle from "./Pages/ProductoDetalle/ProductoDetalle";
-import IconoAcer from "./Components/Icono/Marca/IconoAcer/IconoAcer";
-import IconoIntel from "./Components/Icono/Marca/IconoIntel/IconoIntel";
-import IconoAsus from "./Components/Icono/Marca/IconoAsus/IconoAsus";
-import IconoAMD from "./Components/Icono/Marca/IconoAMD/IconoAMD";
-import IconoLG from "./Components/Icono/Marca/IconoLG/IconoLG";
-import IconoRazer from "./Components/Icono/Marca/IconoRazer/IconoRazer";
+// import ProductoDetalle from "./Pages/ProductoDetalle/ProductoDetalle";
+// import IconoAcer from "./Components/Icono/Marca/IconoAcer/IconoAcer";
+// import IconoIntel from "./Components/Icono/Marca/IconoIntel/IconoIntel";
+// import IconoAsus from "./Components/Icono/Marca/IconoAsus/IconoAsus";
+// import IconoAMD from "./Components/Icono/Marca/IconoAMD/IconoAMD";
+// import IconoLG from "./Components/Icono/Marca/IconoLG/IconoLG";
+// import IconoRazer from "./Components/Icono/Marca/IconoRazer/IconoRazer";
 //import Link from "@mui/material/Link";
 import { UserProvider } from "./context/UserContext";
 import PerfilUsuario from "./Pages/Perfil/PerfilUsuario";
@@ -43,6 +44,10 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //import ProductosPorSubcategoria from './Pages/Productos/ProductosPorSubcategoria';
 import InfoProducto from './Pages/Info/InfoProducto';
+import AdminPanel from './Pages/Admin/AdminPanel';
+import AdminProductos from "./Pages/Admin/AdminProductos";
+import AdminFormularios from "./Pages/Admin/AdminFormularios";
+//import AdminOtros from "./Pages/Admin/AdminOtros";
 
 function App() {
   return(
@@ -78,6 +83,13 @@ function App() {
               {/** <Route path={ROUTES.carrito} element={<Carrito/>}/> */}
             </Route>
 
+            {/** RUTA PRIVADA SOLO EL ADMINISTRADOR */}
+            <Route element={<RutaPrivada adminOnly={true} />}>
+              <Route  path='/administrador/:id' element={<AdminPanel/>} />
+              <Route  path='/administrador/:id/:categoria/' element={<AdminProductos/>} />
+              <Route  path='/administrador/:id/:categoria/:nombre' element={<AdminFormularios/>} />
+            </Route>
+
                 {/* Header */}
                 <Route path="/carrito" element={<Carrito />} />
                 <Route path="/categoria/Ofertas" element={<Ofertas />} />
@@ -88,7 +100,7 @@ function App() {
                 <Route path="/software/:categoria/:subCategoria" element={<Software />} />
 
                 <Route path="/armaTuPC" element={<Login />} />
-                <Route path="/encuesta" element={<Login />} />
+                <Route path="/encuesta" element={<Encuesta />} />
 
 
                 {/*<Route path="/productos/:subcategoriaLabel" element={<ProductosPorSubcategoria />} />*/}

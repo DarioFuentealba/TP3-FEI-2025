@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status, generics
-from .models import CarritoItem
+from .models import CarritoItem, LocalidadArgentina
 from .serializers import CarritoItemSerializer
 from computacion.models import Notebook, Gpu, Fuente, Cooler, Motherboard, Disco, Ram, PcEscritorio
 from django.http import HttpResponse
@@ -16,27 +16,9 @@ from reportlab.graphics.barcode import qr
 from reportlab.graphics.shapes import Drawing
 from django.contrib.contenttypes.models import ContentType
 import os
-from django.db import transaction #Para finalizar compra
-
-# ======== MODELOS DISPONIBLES ========
-MODELOS = {
-    "notebook": Notebook,
-    "notebooks": Notebook,
-    "gpu": Gpu,
-    "gpus": Gpu,
-    "fuente": Fuente,
-    "fuentes": Fuente,
-    "cooler": Cooler,
-    "coolers": Cooler,
-    "motherboard": Motherboard,
-    "motherboards": Motherboard,
-    "disco": Disco,
-    "discos": Disco,
-    "ram": Ram,
-    "rams": Ram,
-    "pc_escritorio": PcEscritorio,
-    "pc_escritorios": PcEscritorio,
-}
+from django.db import transaction
+from usuario.models import UsuarioExtra
+from decimal import Decimal
 
 # ======== ACTUALIZAR ITEM ========
 class CarritoItemUpdateView(generics.UpdateAPIView):
@@ -58,56 +40,44 @@ class CarritoItemDeleteView(APIView):
 
 
 # ======== CARRITO ========
+
 class CarritoView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        """Listar items del carrito del usuario autenticado"""
         items = CarritoItem.objects.filter(usuario=request.user)
         serializer = CarritoItemSerializer(items, many=True)
         return Response({"items": serializer.data})
 
     def post(self, request):
-        nombre_modelo = request.data.get("modelo", "").lower().replace(" ", "")
+        modelo = request.data.get("modelo", "").lower()
         producto_id = request.data.get("producto_id")
         cantidad = int(request.data.get("cantidad", 1))
-        print(">>> Datos recibidos:", request.data)
 
-        if not nombre_modelo or not producto_id:
-            return Response({"Error":"Debe enviar el modelo y el id del producto"},status=status.HTTP_400_BAD_REQUEST)
+        if not modelo or not producto_id:
+            return Response({"error": "Debe enviar modelo y producto_id"}, status=400)
 
+        # Busca el ContentType correspondiente
         try:
-            content_type = ContentType.objects.get(model=nombre_modelo)
+            content_type = ContentType.objects.get(model=modelo)
         except ContentType.DoesNotExist:
-            return Response(
-                {"error": f"Modelo '{nombre_modelo}' no encontrado"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": f"Modelo '{modelo}' no encontrado."}, status=400)
 
-        
         item, creado = CarritoItem.objects.get_or_create(
-    usuario=request.user,
-    content_type=content_type,
-    object_id=producto_id,
-    defaults={
-        "producto_id": producto_id,
-        "modelo": nombre_modelo,
-        "cantidad": cantidad
-    }
-)
+            usuario=request.user,
+            content_type=content_type,
+            object_id=producto_id,
+            defaults={"cantidad": cantidad}
+        )
 
         if not creado:
-            item.cantidad+=cantidad
+            item.cantidad += cantidad
             item.save()
 
-        else:
-            item.cantidad=cantidad
-            item.save()
-        
+        serializer = CarritoItemSerializer(CarritoItem.objects.filter(usuario=request.user), many=True)
+        return Response({"items": serializer.data}, status=201)
 
-        items = CarritoItem.objects.filter(usuario=request.user)
-        serializer = CarritoItemSerializer(items, many=True)
-        print(">>> Datos devueltos por el backend:", serializer.data)
-        return Response({"items": serializer.data}, status=status.HTTP_201_CREATED)
 
 
 # ======== GENERAR PDF CON QR ========
@@ -146,6 +116,12 @@ def generar_pdf(request):
         textColor=colors.HexColor("#1E3A8A"),
         spaceAfter=20
     )
+    estilo_celda =ParagraphStyle(
+        "Celda",
+        fontSize=10,
+        alignment=1,
+        leading=12
+    )
 
     contenido = []
     contenido.append(Paragraph("Productos en tu carrito", estilo_titulo))
@@ -166,50 +142,69 @@ def generar_pdf(request):
 
     # === OBTENER DATOS DEL CARRITO ===
     carrito_items = CarritoItem.objects.filter(usuario=user)
-    data = [["Producto", "Precio", "Cantidad", "Modelo"]]
+    data = [["Nombre", "Precio", "Cantidad", "Subtotal"]]
+    total = 0
 
     if carrito_items.exists():
         for item in carrito_items:
-            producto = item.producto  # objeto genérico (CPU, Notebook, etc.)
-            if producto is None:
+            producto = item.producto
+            if not producto:
                 continue
 
-            # Intentar obtener categoría o subcategoría si existen
-            categoria = ""
-            try:
-                if hasattr(producto, "subcategoria") and hasattr(producto.subcategoria, "categoria"):
-                    categoria = producto.subcategoria.categoria.nombre
-                elif hasattr(producto, "categoria"):
-                    categoria = producto.categoria.nombre
-            except Exception:
-                categoria = "No especificada"
-
-            # Obtener imagen si existe
-            foto = getattr(producto, "foto", None)
-            foto_texto = foto.url if foto else "Sin imagen"
+            nombre = getattr(producto, "nombre", "Sin nombre")
+            precio = getattr(producto, "precio", 0)
+            cantidad = item.cantidad
+            subtotal = precio * cantidad
+            total += subtotal
 
             data.append([
-                getattr(item, "producto_nombre", "N/A"),
-                f"${getattr(item, 'producto_precio', 0):.2f}",
-                str(item.cantidad),
-                item.modelo
+                Paragraph(nombre,estilo_celda),
+                f"${precio:.2f}",
+                str(cantidad),
+                f"${subtotal:.2f}"
             ])
     else:
-        data.append(["(Sin productos en el carrito)", "", "", "", ""])
+        data.append(["(Sin productos en el carrito)", "", "", ""])
 
-    # === CREAR TABLA ===
-    tabla = Table(data, colWidths=[180, 100, 80, 120, 150])
+    # === AGREGAR TOTAL ===
+    data.append(["", "", "Total:", f"${total:.2f}"])
+
+
+
+    # === CREAR TABLA   AJUSTES AUTOMATICOS (ANCHO)  ===
+    col_widths=[max(200, len(str(item[0]))*6) for item in data] # AJUSTA EL ANCHO DE CADA CELDA EN FUNCION DEL NOMBRE
+    tabla = Table(data, colWidths=[250, 100, 80, 100])
     tabla.setStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#1E3A8A')),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 10),
-        ('GRID', (0, 0), (-1, -1), 0.5, colors.gray)
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.gray),
+        ('FONTNAME', (-2, -1), (-1, -1), 'Helvetica-Bold'),  # resaltar total
     ])
     contenido.append(tabla)
     contenido.append(Spacer(1, 30))
 
+    # ====== OBTENCION DEL COSTO DE ENVIO =========
+    try:
+        usuario_extra=UsuarioExtra.objects.get(usuario=user)
+        codigo_postal=usuario_extra.codigo_postal
+        localidad=LocalidadArgentina.objects.get(codigo_postal=str(codigo_postal))
+        costo_envio=localidad.costo_envio
+        nombre_localidad=localidad.localidad
+    except Exception:
+        costo_envio=0
+        nombre_localidad="(Sin Localidad Registrada)"
+
+    total_general=total + Decimal(costo_envio)
+
+    # ======= AGREGAR INFORMACION DE ENVIO ========
+    contenido.append(Paragraph(f"Localidad: {nombre_localidad}", styles["Normal"]))
+    contenido.append(Paragraph(f"Costo de Envio: ${costo_envio:.2f}", styles["Normal"]))
+    contenido.append(Paragraph(f"TOTAL GENERAL: ${total_general:.2f}", estilo_titulo))
+    contenido.append(Spacer(1,30))
+    
     # === CÓDIGO QR ===
     qr_data = f"https://tu-sitio.com/pagar/{user_id}"
     qr_code = qr.QrCodeWidget(qr_data)
@@ -231,7 +226,8 @@ def generar_pdf(request):
     return response
 
 
-# Finalizar compra
+
+# FINALIZAR COMPRA 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def finalizar_compra(request):

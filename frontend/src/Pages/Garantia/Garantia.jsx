@@ -267,7 +267,7 @@ const Garantia = () => {
                         <div className="p-3 rounded-md text-sm border font-bold bg-[#ffffff] border-white text-[#1F2937] dark:bg-green-300 dark:border-green-300 dark:text-black">
                             <p>POR FAVOR, ASEGÚRATE DE COMPLETAR TODOS LOS CAMPOS ANTES DE ENVIAR EL FORMULARIO.</p>
                             <p>UN TECNICO SE COMUNICARA CON USTED VIA MAIL PARA CONFIRMARLE LOS PASOS A SEGUIR.</p>
-                            <p>EL SECTOR DE RMA SE ENCUENTRA EN Calle Falsa 123 - CABA Floresta.</p>
+                            <p>EL SECTOR DE RMA SE ENCUENTRA EN Calle Falsa 123 - Neuquén.</p>
                         </div>
 
                         {/* Botón enviar */}

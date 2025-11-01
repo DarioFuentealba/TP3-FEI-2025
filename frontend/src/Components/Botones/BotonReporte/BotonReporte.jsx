@@ -15,10 +15,7 @@ export default function ReporteButton() {
     //const token = localStorage.getItem("access"); // tu JWT token guardado al hacer login
 
     // PETICION AL BACKEND DE USUARIO LOGEADO PARA OBTENER EL REPORTE (VER URLS DE LA APP USUARIO) 
-    /*
-    TODO: ACA ABAJO CAMBIE venta POR carrito
-    */
-    const response = await fetch("http://localhost:8000/api/carrito/reporte/", {
+    const response = await fetch("http://localhost:8000/api/carrito/pdf/", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${user.access}`, // 🔐 Token JWT

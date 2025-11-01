@@ -20,6 +20,7 @@ import IconoCorazon from '../Icono/IconosHeader/IconoCorazon/IconoCorazon';
 import IconoLapiz from '../Icono/IconosHeader/IconoLapiz/IconoLapiz';
 import BotonConIcono from "../Botones/BotonBarraInicio/BotonConIcono/BotonConIcono";
 import Usos from "../../Pages/Usos/Usos";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import ThemeToggle from "../ThemeToggle/ThemeToggle";
 import { useMoneda } from "../../context/MonedaContext";
 import MenuItem from "@mui/material/MenuItem";
@@ -36,7 +37,7 @@ const BarraInicio = () => {
     const { moneda, toggleMoneda } = useMoneda();
     const {user,logout,chekingAuth} =useUser();
     const[anchorEl,setAnchorEl] =useState();
-
+   //console.log(user);
 
     const handleAvatarClick=(event)=>{
         setAnchorEl(event.currentTarget);
@@ -103,6 +104,14 @@ const BarraInicio = () => {
                                 onClick={toggleMoneda}
                             />
                         </div>
+                        {/**MUESTRA EL ICONO SOLO PARA EL USUARIO ADMINISTRADOR  */}
+                        {user?.isAdm && (
+                            <AdminPanelSettingsIcon sx={{fontSize:35, color:"#ff9800", cursor:"pointer"}} 
+                            onClick={() => navigate(`/administrador/${user.id}`)}>
+                                {/* <AdminPanelSettings /> */}
+                            </AdminPanelSettingsIcon>
+                        )}
+
                             {/**  CONTROLA EL ICONO DE LOGIN Y LOGOUT  */}
                         <div className="flex gap-4">
                             {user ? (
@@ -272,7 +281,12 @@ const BarraInicio = () => {
                         <BotonConIcono icono={IconoHerramienta} texto="Armar PC" onClick={() => alert("Botón clickeado!")} />
 
                         {/* Boton Tu PC ideal */}
-                        <BotonConIcono icono={IconoLapiz} texto="Tu PC ideal" onClick={() => alert("Botón clickeado!")} />
+<Link to="/encuesta">
+  <BotonConIcono
+    icono={IconoLapiz}
+    texto="Tu PC ideal"
+  />
+</Link>
                     </div>
                 </div>
 

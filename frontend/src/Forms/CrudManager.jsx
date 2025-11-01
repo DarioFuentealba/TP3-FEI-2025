@@ -5,9 +5,6 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  Grid,
-  Card,
-  CardContent,
   Typography,
   Table,
   TableBody,
@@ -16,24 +13,23 @@ import {
   TableRow,
   IconButton,
   Paper,
-  MenuItem,
+  Card,
+  CardContent,
+  Box,
+  Stack,
+  TableContainer,
 } from "@mui/material";
-import { Edit, Delete } from "@mui/icons-material";
+import { Edit, Delete, ArrowBack } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 import { useApi } from "../hooks/useApi";
+import { SelectField } from "../Components/SelectField/SelectField";
 
 export default function CrudManager({ resource, fields }) {
   const { data, createItem, updateItem, deleteItem } = useApi(resource);
   const { handleSubmit, control, reset, setValue } = useForm();
   const [editingId, setEditingId] = useState(null);
 
-  // Hooks para cargar selects dinámicos
-  const selectsHooks = {};
-  fields.forEach((f) => {
-    if (f.type === "select" && f.optionsResource) {
-      selectsHooks[f.name] = useApi(f.optionsResource);
-    }
-  });
-
+  console.log("DATA => ", data);
   const handleEdit = (item) => {
     setEditingId(item.id);
     Object.keys(item).forEach((key) => setValue(key, item[key]));
@@ -55,132 +51,190 @@ export default function CrudManager({ resource, fields }) {
     await deleteItem(id);
   };
 
+  // Campo "subcategoria" al final
+  const subcategoriaField = fields.find(
+    (f) => f.name.toLowerCase() === "subcategoria"
+  );
+  const otherFields = fields.filter(
+    (f) => f.name.toLowerCase() !== "subcategoria"
+  );
+
   return (
-    <Grid container spacing={4} sx={{ mt: 2 }}>
-      {/* Formulario */}
-      <Grid item xs={12} md={5}>
-        <Card>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              {editingId ? `Editar ${resource}` : `Crear ${resource}`}
-            </Typography>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Grid container spacing={2}>
-                {fields.map((field) => (
-                  <Grid item xs={12} key={field.name}>
-                    <Controller
-                      name={field.name}
-                      control={control}
-                      defaultValue={field.type === "checkbox" ? false : ""}
-                      render={({ field: controllerField }) => {
-                        // Checkbox
-                        if (field.type === "checkbox") {
-                          return (
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  {...controllerField}
-                                  checked={controllerField.value}
-                                />
-                              }
-                              label={field.label}
-                            />
-                          );
-                        }
+    <Box sx={{ mt: 3, px: { xs: 2, md: 6 }, pb: 6 }}>
+      {/* 🔙 Botón volver atrás */}
+      <Box sx={{ mb: 2 }}>
+        <Button
+          component={Link}
+          to="/"
+          startIcon={<ArrowBack />}
+          variant="text"
+          sx={{ textTransform: "none" }}
+        >
+          Volver atrás
+        </Button>
+      </Box>
 
-                        // Select dinámico
-                        if (field.type === "select") {
-                          const hook = selectsHooks[field.name];
-                          const options = field.options || hook?.data || [];
-
-                          return (
-                            <TextField
-                              {...controllerField}
-                              select
-                              fullWidth
-                              label={field.label}
-                            >
-                              {options.map((opt) => (
-                                <MenuItem key={opt.id || opt.value} value={opt.id || opt.value}>
-                                  {opt.nombre || opt.label}
-                                </MenuItem>
-                              ))}
-                            </TextField>
-                          );
-                        }
-
-                        // File
-                        if (field.type === "file") {
-                          return (
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) =>
-                                controllerField.onChange(e.target.files[0])
-                              }
-                            />
-                          );
-                        }
-
-                        // Text/Number
-                        return (
-                          <TextField
-                            {...controllerField}
-                            label={field.label}
-                            fullWidth
-                            type={field.type}
-                          />
-                        );
-                      }}
-                    />
-                  </Grid>
-                ))}
-
-                <Grid item xs={12}>
-                  <Button type="submit" variant="contained" fullWidth>
-                    {editingId ? "Actualizar" : "Crear"}
-                  </Button>
-                  {editingId && (
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      fullWidth
-                      sx={{ mt: 1 }}
-                      onClick={() => {
-                        reset();
-                        setEditingId(null);
-                      }}
-                    >
-                      Cancelar edición
-                    </Button>
-                  )}
-                </Grid>
-              </Grid>
-            </form>
-          </CardContent>
-        </Card>
-      </Grid>
-
-      {/* Tabla */}
-      <Grid item xs={12} md={7}>
-        <Paper sx={{ p: 2 }}>
+      {/* 🧾 FORMULARIO */}
+      <Card sx={{ mb: 4, p: 2 }}>
+        <CardContent>
           <Typography variant="h6" gutterBottom>
-            Lista de {resource}
+            {editingId ? `Editar ${resource}` : `Crear ${resource}`}
           </Typography>
-          <Table>
+
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Stack spacing={2}>
+              {/* Campos dinámicos */}
+              {otherFields.map((field) => (
+                <Controller
+                  key={field.name}
+                  name={field.name}
+                  control={control}
+                  defaultValue={field.type === "checkbox" ? false : ""}
+                  render={({ field: controllerField }) => {
+                    if (field.type === "checkbox") {
+                      return (
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              {...controllerField}
+                              checked={controllerField.value}
+                            />
+                          }
+                          label={field.label}
+                        />
+                      );
+                    }
+
+                    if (field.type === "select") {
+                      return (
+                        <SelectField
+                          key={field.name}
+                          field={field}
+                          control={control}
+                        />
+                      );
+                    }
+
+                    if (field.type === "file") {
+                      return (
+                        <Box>
+                          <Typography variant="body2" sx={{ mb: 0.5 }}>
+                            {field.label}
+                          </Typography>
+                          <input
+                            type="file"
+                            accept={field.accept || "image/*"}
+                            onChange={(e) =>
+                              controllerField.onChange(e.target.files[0])
+                            }
+                          />
+                        </Box>
+                      );
+                    }
+
+                    return (
+                      <TextField
+                        {...controllerField}
+                        label={field.label}
+                        fullWidth
+                        type={field.type}
+                      />
+                    );
+                  }}
+                />
+              ))}
+
+              {/* Campo subcategoría al final */}
+              {subcategoriaField && (
+                <Controller
+                  name={subcategoriaField.name}
+                  control={control}
+                  render={({ field: controllerField }) => (
+                    <SelectField
+                      key={subcategoriaField.name}
+                      field={subcategoriaField}
+                      control={control}
+                      {...controllerField}
+                    />
+                  )}
+                />
+              )}
+
+              {/* Botones */}
+              <Stack spacing={1}>
+                <Button type="submit" variant="contained" fullWidth>
+                  {editingId ? "Actualizar" : "Crear"}
+                </Button>
+                {editingId && (
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    fullWidth
+                    onClick={() => {
+                      reset();
+                      setEditingId(null);
+                    }}
+                  >
+                    Cancelar edición
+                  </Button>
+                )}
+              </Stack>
+            </Stack>
+          </form>
+        </CardContent>
+      </Card>
+
+      {/* 📊 TABLA DE REGISTROS */}
+      <Paper sx={{ p: 2 }}>
+        <Typography variant="h6" gutterBottom>
+          Lista de {resource}
+        </Typography>
+
+        <TableContainer sx={{ maxHeight: 500, overflowY: "auto" }}>
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
                 {fields.map((f) => (
-                  <TableCell key={f.name}>{f.label}</TableCell>
+                  <TableCell
+                    key={f.name}
+                    sx={{
+                      fontWeight: "bold",
+                      backgroundColor: "#f5f5f5",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                      maxWidth: 200,
+                    }}
+                  >
+                    {f.label}
+                  </TableCell>
                 ))}
-                <TableCell>Acciones</TableCell>
+                <TableCell sx={{ fontWeight: "bold", backgroundColor: "#f5f5f5" }}>
+                  Acciones
+                </TableCell>
               </TableRow>
             </TableHead>
+
             <TableBody>
               {data.map((item) => (
-                <TableRow key={item.id}>
+                <TableRow
+                  key={item.id}
+                  hover
+                  sx={{
+                    "&:nth-of-type(odd)": { backgroundColor: "#fafafa" },
+                  }}
+                >
                   {fields.map((f) => (
-                    <TableCell key={f.name}>
+                    <TableCell
+                      key={f.name}
+                      sx={{
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        maxWidth: 250,
+                      }}
+                      title={item[f.name]} // Tooltip con texto completo
+                    >
                       {f.type === "checkbox"
                         ? item[f.name]
                           ? "✅"
@@ -200,7 +254,10 @@ export default function CrudManager({ resource, fields }) {
                     <IconButton color="primary" onClick={() => handleEdit(item)}>
                       <Edit />
                     </IconButton>
-                    <IconButton color="error" onClick={() => handleDelete(item.id)}>
+                    <IconButton
+                      color="error"
+                      onClick={() => handleDelete(item.id)}
+                    >
                       <Delete />
                     </IconButton>
                   </TableCell>
@@ -208,8 +265,8 @@ export default function CrudManager({ resource, fields }) {
               ))}
             </TableBody>
           </Table>
-        </Paper>
-      </Grid>
-    </Grid>
+        </TableContainer>
+      </Paper>
+    </Box>
   );
 }

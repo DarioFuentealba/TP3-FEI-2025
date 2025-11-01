@@ -6,7 +6,6 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { registerUser } from "../../api/auth";
 import IconoRazer from "../../Components/Icono/Marca/IconoRazer/IconoRazer";
 import IconoAsus from "../../Components/Icono/Marca/IconoAsus/IconoAsus";
@@ -36,6 +35,7 @@ export default function Register() {
         last_name: data.last_name,
         password: data.password,
         password2: data.password2,
+        codigo_postal: data.codigo_postal,
       });
 
       // Guardar tokens directamente del registro
@@ -108,8 +108,8 @@ export default function Register() {
               helperText={errors.username?.message}
               fullWidth
               margin="normal"
-              InputProps={{ style: { color: "inherit" } }}
-              InputLabelProps={{ style: { color: "inherit" } }}
+              slotPropsinput={{ style: { color: "inherit" } }}
+              slotPropsinputLabel={{ style: { color: "inherit" } }}
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": { borderColor: "#ffffff" },
@@ -146,6 +146,72 @@ export default function Register() {
               helperText={errors.email?.message}
               fullWidth
               margin="normal"
+              slotPropsinput={{ style: { color: "inherit" } }}
+              slotPropsinputLabel={{ style: { color: "inherit" } }}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "#ffffff" },
+                  "&:hover fieldset": { borderColor: "#ffffff" },
+                  "&.Mui-focused fieldset": { borderColor: "#ffffff" },
+                  "& input": { color: "#ffffff" },
+                },
+                "& .MuiInputLabel-root": { color: "#ffffff" },
+                "& .MuiInputLabel-root.Mui-focused": { color: "#ffffff" },
+                "@media (prefers-color-scheme: dark)": {
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: "#000000" },
+                    "&:hover fieldset": { borderColor: "#00FF84" },
+                    "&.Mui-focused fieldset": { borderColor: "#00FF84" },
+                    "& input": { color: "#00FF84" },
+                  },
+                  "& .MuiInputLabel-root": { color: "#00FF84" },
+                  "& .MuiInputLabel-root.Mui-focused": { color: "#00FF84" },
+                },
+              }}
+            />
+          </div>
+
+          {/* Codigo postal */}
+          <div className="bg-[#1F2937] border-[#000000] text-[#ffffff] dark:bg-[#000000] dark:border-[#00FF84] dark:text-[#00FF84]">
+            <TextField
+              label="Código Postal"
+              variant="outlined"
+              {...register("codigo_postal")}
+              fullWidth
+              margin="normal"
+              slotPropsinput={{ style: { color: "inherit" } }}
+              slotPropsinputLabel={{ style: { color: "inherit" } }}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "#ffffff" },
+                  "&:hover fieldset": { borderColor: "#ffffff" },
+                  "&.Mui-focused fieldset": { borderColor: "#ffffff" },
+                  "& input": { color: "#ffffff" },
+                },
+                "& .MuiInputLabel-root": { color: "#ffffff" },
+                "& .MuiInputLabel-root.Mui-focused": { color: "#ffffff" },
+                "@media (prefers-color-scheme: dark)": {
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: "#000000" },
+                    "&:hover fieldset": { borderColor: "#00FF84" },
+                    "&.Mui-focused fieldset": { borderColor: "#00FF84" },
+                    "& input": { color: "#00FF84" },
+                  },
+                  "& .MuiInputLabel-root": { color: "#00FF84" },
+                  "& .MuiInputLabel-root.Mui-focused": { color: "#00FF84" },
+                },
+              }}
+            />
+          </div>
+
+          {/* Codigo postal */}
+          <div className="bg-[#1F2937] border-[#000000] text-[#ffffff] dark:bg-[#000000] dark:border-[#00FF84] dark:text-[#00FF84]">
+            <TextField
+              label="Código Postal"
+              variant="outlined"
+              {...register("codigo_postal")}
+              fullWidth
+              margin="normal"
               InputProps={{ style: { color: "inherit" } }}
               InputLabelProps={{ style: { color: "inherit" } }}
               sx={{
@@ -179,8 +245,8 @@ export default function Register() {
               {...register("first_name")}
               fullWidth
               margin="normal"
-              InputProps={{ style: { color: "inherit" } }}
-              InputLabelProps={{ style: { color: "inherit" } }}
+              slotPropsinput={{ style: { color: "inherit" } }}
+              slotPropsinputLabel={{ style: { color: "inherit" } }}
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": { borderColor: "#ffffff" },
@@ -212,8 +278,8 @@ export default function Register() {
               {...register("last_name")}
               fullWidth
               margin="normal"
-              InputProps={{ style: { color: "inherit" } }}
-              InputLabelProps={{ style: { color: "inherit" } }}
+              slotPropsinput={{ style: { color: "inherit" } }}
+              slotPropsinputLabel={{ style: { color: "inherit" } }}
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": { borderColor: "#ffffff" },
@@ -251,7 +317,7 @@ export default function Register() {
               helperText={errors.password?.message}
               fullWidth
               margin="normal"
-              InputProps={{
+              slotPropsinput={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton 
@@ -266,7 +332,7 @@ export default function Register() {
                   </InputAdornment>
                 ),
               }}
-              InputLabelProps={{ style: { color: "inherit" } }}
+              slotPropsinputLabel={{ style: { color: "inherit" } }}
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": { borderColor: "#ffffff" },
@@ -304,7 +370,7 @@ export default function Register() {
               helperText={errors.password2?.message}
               fullWidth
               margin="normal"
-              InputProps={{
+              slotPropsinput={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton 
@@ -319,7 +385,7 @@ export default function Register() {
                   </InputAdornment>
                 ),
               }}
-              InputLabelProps={{ style: { color: "inherit" } }}
+              slotPropsinputLabel={{ style: { color: "inherit" } }}
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": { borderColor: "#ffffff" },

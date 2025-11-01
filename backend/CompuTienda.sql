@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2-1.fc42
+-- version 5.2.3-1.fc42
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 16-10-2025 a las 18:30:30
+-- Tiempo de generación: 31-10-2025 a las 13:03:34
 -- Versión del servidor: 8.0.42
 -- Versión de PHP: 8.4.13
 
@@ -214,7 +214,31 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (141, 'Can add producto', 36, 'add_producto'),
 (142, 'Can change producto', 36, 'change_producto'),
 (143, 'Can delete producto', 36, 'delete_producto'),
-(144, 'Can view producto', 36, 'view_producto');
+(144, 'Can view producto', 36, 'view_producto'),
+(145, 'Can add Perfil', 37, 'add_perfil'),
+(146, 'Can change Perfil', 37, 'change_perfil'),
+(147, 'Can delete Perfil', 37, 'delete_perfil'),
+(148, 'Can view Perfil', 37, 'view_perfil'),
+(149, 'Can add Interes', 38, 'add_interes'),
+(150, 'Can change Interes', 38, 'change_interes'),
+(151, 'Can delete Interes', 38, 'delete_interes'),
+(152, 'Can view Interes', 38, 'view_interes'),
+(153, 'Can add Producto Favorito', 39, 'add_favoritoproducto'),
+(154, 'Can change Producto Favorito', 39, 'change_favoritoproducto'),
+(155, 'Can delete Producto Favorito', 39, 'delete_favoritoproducto'),
+(156, 'Can view Producto Favorito', 39, 'view_favoritoproducto'),
+(157, 'Can add proveedores', 40, 'add_proveedores'),
+(158, 'Can change proveedores', 40, 'change_proveedores'),
+(159, 'Can delete proveedores', 40, 'delete_proveedores'),
+(160, 'Can view proveedores', 40, 'view_proveedores'),
+(161, 'Can add usuario extra', 41, 'add_usuarioextra'),
+(162, 'Can change usuario extra', 41, 'change_usuarioextra'),
+(163, 'Can delete usuario extra', 41, 'delete_usuarioextra'),
+(164, 'Can view usuario extra', 41, 'view_usuarioextra'),
+(165, 'Can add localidad argentina', 42, 'add_localidadargentina'),
+(166, 'Can change localidad argentina', 42, 'change_localidadargentina'),
+(167, 'Can delete localidad argentina', 42, 'delete_localidadargentina'),
+(168, 'Can view localidad argentina', 42, 'view_localidadargentina');
 
 -- --------------------------------------------------------
 
@@ -241,10 +265,9 @@ CREATE TABLE `auth_user` (
 --
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(1, 'pbkdf2_sha256$870000$IcpPpMSE43ctg5aWuoyFKQ$SuDiA0Fx0Ds9QtOI0Op2mi1nrsKm6X1Yro8jPVrCI+4=', NULL, 0, 'lolo', 'pablo', 'urra', 'p@g.com', 0, 1, '2025-10-11 20:00:25.495499'),
-(2, 'pbkdf2_sha256$870000$9onwkMvWCw56d1otJbJnR0$b0xCZoqk4PeplV6kqR4I5eGI/K8ODcCtyzp/mc8Vy1I=', NULL, 0, 'lulu', 'erica', 'cabezas', 'e@g.com', 0, 1, '2025-10-11 20:01:21.429203'),
-(3, 'pbkdf2_sha256$870000$7X0ht27eG5Xocr8IfyyfVQ$hTtAVwJbb8coNwIV4mE9GrXD8j7xMIND+eyzU2No73M=', NULL, 0, 'lala', 'dani', 'bf', 'd@g.com', 0, 1, '2025-10-01 15:25:58.882727'),
-(4, 'pbkdf2_sha256$870000$KRqurNK0aNHvx6Ud5ZeIHr$KXyRNCjmDyeQp41nHVBIdQfjVnqma25wMuSc9os2lA0=', NULL, 0, 'lele', 'pepe', 'gozales', 'l@g.com', 0, 1, '2025-10-01 17:17:58.137770');
+(1, 'pbkdf2_sha256$870000$IcpPpMSE43ctg5aWuoyFKQ$SuDiA0Fx0Ds9QtOI0Op2mi1nrsKm6X1Yro8jPVrCI+4=', NULL, 1, 'lolo', 'pablo', 'urra', 'p@g.com', 1, 1, '2025-10-11 20:00:25.495499'),
+(2, 'pbkdf2_sha256$870000$5bAuRJ7matBzo8wOM1nFhz$SxmoqdWWv4ZwP0Htk9yjmyrHYbQgPw62m0lB5JN9n9I=', NULL, 0, 'lulu', 'erica', 'cabezas', 'e@g.com', 0, 1, '2025-10-11 20:01:21.429203'),
+(3, 'pbkdf2_sha256$870000$4H0xbTsGIuDL2Qg2MLDljc$IwLR2O/+z5RDjEfkW+v5lCfrYesuVRHHjuzqHZZArmg=', NULL, 0, 'lele', 'leandro', 'Gonzales', 'l@g.com', 0, 1, '2025-10-27 03:14:11.379443');
 
 -- --------------------------------------------------------
 
@@ -277,11 +300,22 @@ CREATE TABLE `auth_user_user_permissions` (
 --
 
 CREATE TABLE `carrito_carritoitem` (
-  `id` bigint NOT NULL,
-  `cantidad` int UNSIGNED NOT NULL,
+  `id` int NOT NULL,
   `usuario_id` int NOT NULL,
-  `producto_id` bigint NOT NULL
-) ;
+  `content_type_id` int DEFAULT NULL,
+  `object_id` int DEFAULT NULL,
+  `cantidad` int DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `carrito_carritoitem`
+--
+
+INSERT INTO `carrito_carritoitem` (`id`, `usuario_id`, `content_type_id`, `object_id`, `cantidad`) VALUES
+(37, 1, 17, 3, 3),
+(38, 1, 11, 2, 2),
+(39, 1, 12, 6, 1),
+(42, 2, 17, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -338,6 +372,7 @@ CREATE TABLE `computacion_cooler` (
   `consumo` decimal(5,3) NOT NULL,
   `cooler_incluidos` int NOT NULL,
   `iluminacion` varchar(150) NOT NULL,
+  `socket_cpu` varchar(150) NOT NULL,
   `foto1` varchar(100) DEFAULT NULL,
   `foto2` varchar(100) DEFAULT NULL,
   `foto3` varchar(100) DEFAULT NULL,
@@ -348,17 +383,17 @@ CREATE TABLE `computacion_cooler` (
 -- Volcado de datos para la tabla `computacion_cooler`
 --
 
-INSERT INTO `computacion_cooler` (`id`, `nombre`, `precio`, `stock`, `fabricante`, `oferta`, `color`, `consumo`, `cooler_incluidos`, `iluminacion`, `foto1`, `foto2`, `foto3`, `subcategoria_id`) VALUES
-(1, 'Fan Cooler 120mm Thermalright TL-C12CW - 120 White', 6400.00, 5, 'Thermalright', 0, 'Blanco', 3.000, 1, 'No', 'Componentes/Cooler/01_a.jpg', 'Componentes/Cooler/01_b.jpg', NULL, 7),
-(2, 'OUTLET - CPU Cooler Xigmatek Air-Killer S Rainbow - Compatible con Intel 12 Gen (Socket 1700)', 30000.00, 5, 'Xigmatek', 1, 'Negro', 3.600, 1, 'Si', 'Componentes/Cooler/02_a.jpg', NULL, NULL, 7),
-(3, 'Fan Cooler 120mm Xigmatek G20A - Black - Pack x3 ARGB', 36900.00, 5, 'Xigmatek', 0, 'Negro', 3.600, 1, 'Si', 'Componentes/Cooler/03_a.jpg', 'Componentes/Cooler/03_b.jpg', NULL, 7),
-(4, 'Kit Fan Cooler x3 Gamemax 120mm RQ300 ARGB', 41000.00, 5, 'Gamemax', 0, 'Negro', 4.000, 1, 'ARGB direccionable con iluminación interior y exterior', 'Componentes/Cooler/04_a.jpg', 'Componentes/Cooler/04_b.jpg', NULL, 7),
-(5, 'Fan Cooler 120mm Corsair RS120 MAX PWM Single Black', 52600.00, 5, 'Corsair', 0, 'Negro', 3.600, 1, 'No', 'Componentes/Cooler/05_a.jpg', 'Componentes/Cooler/05_b.jpg', NULL, 7),
-(6, 'CPU Water Cooler 360mm Gamemax Icechill 360 ARGB', 124700.00, 6, 'Gamemax', 1, 'Negro', 3.600, 3, 'Si', 'Componentes/Cooler/06_a.jpg', 'Componentes/Cooler/06_b.jpg', 'Componentes/Cooler/06_c.jpg', 7),
-(7, 'CPU Water Cooler 240mm Thermaltake TH240 V2 Ultra EX ARGB Sync Snow Edition', 235900.00, 5, 'Thermalright', 0, 'Blanco', 6.250, 2, 'ARGB direccionable en ventiladores y bomba', 'Componentes/Cooler/07_a.jpg', 'Componentes/Cooler/07_b.jpg', 'Componentes/Cooler/07_c.jpg', 7),
-(8, 'CPU Water Cooler 240mm Gigabyte AORUS WATERFORCE X II 240 ARGB', 326300.00, 5, 'Gigabyte', 0, 'Negro', 3.600, 2, 'Si', 'Componentes/Cooler/08_a.jpg', 'Componentes/Cooler/08_b.jpg', NULL, 7),
-(9, 'CPU Water Cooler 360mm Gigabyte AORUS WATERFORCE X II 360 ARGB', 430800.00, 5, 'Gigabyte', 1, 'Negro', 6.750, 3, 'Si', 'Componentes/Cooler/09_a.jpg', 'Componentes/Cooler/09_b.jpg', 'Componentes/Cooler/09_c.jpg', 7),
-(10, 'CPU Water 360mm Cooler Cooler Master ML 360 ION ARGB', 476600.00, 5, 'Cooler Master', 0, 'Negro', 6.750, 3, 'Si', 'Componentes/Cooler/10_a.jpg', 'Componentes/Cooler/10_b.jpg', NULL, 7);
+INSERT INTO `computacion_cooler` (`id`, `nombre`, `precio`, `stock`, `fabricante`, `oferta`, `color`, `consumo`, `cooler_incluidos`, `iluminacion`, `socket_cpu`, `foto1`, `foto2`, `foto3`, `subcategoria_id`) VALUES
+(1, 'Fan Cooler 120mm Thermalright TL-C12CW - 120 White', 6400.00, 5, 'Thermalright', 0, 'Blanco', 3.000, 1, 'No', 'AM4', 'Componentes/Cooler/01_a.jpg', 'Componentes/Cooler/01_b.jpg', NULL, 7),
+(2, 'OUTLET - CPU Cooler Xigmatek Air-Killer S Rainbow - Compatible con Intel 12 Gen (Socket 1700)', 30000.00, 5, 'Xigmatek', 1, 'Negro', 3.600, 1, 'Si', '1700', 'Componentes/Cooler/02_a.jpg', NULL, NULL, 7),
+(3, 'Fan Cooler 120mm Xigmatek G20A - Black - Pack x3 ARGB', 36900.00, 5, 'Xigmatek', 0, 'Negro', 3.600, 1, 'Si', '1700', 'Componentes/Cooler/03_a.jpg', 'Componentes/Cooler/03_b.jpg', NULL, 7),
+(4, 'Kit Fan Cooler x3 Gamemax 120mm RQ300 ARGB', 41000.00, 5, 'Gamemax', 0, 'Negro', 4.000, 1, 'ARGB direccionable con iluminación interior y exterior', 'AM4', 'Componentes/Cooler/04_a.jpg', 'Componentes/Cooler/04_b.jpg', NULL, 7),
+(5, 'Fan Cooler 120mm Corsair RS120 MAX PWM Single Black', 52600.00, 5, 'Corsair', 0, 'Negro', 3.600, 1, 'No', '1700', 'Componentes/Cooler/05_a.jpg', 'Componentes/Cooler/05_b.jpg', NULL, 7),
+(6, 'CPU Water Cooler 360mm Gamemax Icechill 360 ARGB', 124700.00, 6, 'Gamemax', 1, 'Negro', 3.600, 3, 'Si', 'AM5', 'Componentes/Cooler/06_a.jpg', 'Componentes/Cooler/06_b.jpg', 'Componentes/Cooler/06_c.jpg', 7),
+(7, 'CPU Water Cooler 240mm Thermaltake TH240 V2 Ultra EX ARGB Sync Snow Edition', 235900.00, 5, 'Thermalright', 0, 'Blanco', 6.250, 2, 'ARGB direccionable en ventiladores y bomba', 'AM5', 'Componentes/Cooler/07_a.jpg', 'Componentes/Cooler/07_b.jpg', 'Componentes/Cooler/07_c.jpg', 7),
+(8, 'CPU Water Cooler 240mm Gigabyte AORUS WATERFORCE X II 240 ARGB', 326300.00, 5, 'Gigabyte', 0, 'Negro', 3.600, 2, 'Si', '1700', 'Componentes/Cooler/08_a.jpg', 'Componentes/Cooler/08_b.jpg', NULL, 7),
+(9, 'CPU Water Cooler 360mm Gigabyte AORUS WATERFORCE X II 360 ARGB', 430800.00, 5, 'Gigabyte', 1, 'Negro', 6.750, 3, 'Si', 'AM5', 'Componentes/Cooler/09_a.jpg', 'Componentes/Cooler/09_b.jpg', 'Componentes/Cooler/09_c.jpg', 7),
+(10, 'CPU Water 360mm Cooler Cooler Master ML 360 ION ARGB', 476600.00, 5, 'Cooler Master', 0, 'Negro', 6.750, 3, 'Si', 'AM5', 'Componentes/Cooler/10_a.jpg', 'Componentes/Cooler/10_b.jpg', NULL, 7);
 
 -- --------------------------------------------------------
 
@@ -421,6 +456,7 @@ CREATE TABLE `computacion_disco` (
   `stock` int NOT NULL,
   `fabricante` varchar(200) NOT NULL,
   `oferta` tinyint(1) NOT NULL,
+  `socket_disco` varchar(100) NOT NULL,
   `capacidad_gb` varchar(100) NOT NULL,
   `consumo` decimal(10,2) NOT NULL,
   `velocidad` varchar(150) NOT NULL,
@@ -435,16 +471,16 @@ CREATE TABLE `computacion_disco` (
 -- Volcado de datos para la tabla `computacion_disco`
 --
 
-INSERT INTO `computacion_disco` (`id`, `nombre`, `precio`, `stock`, `fabricante`, `oferta`, `capacidad_gb`, `consumo`, `velocidad`, `conexion`, `foto1`, `foto2`, `foto3`, `subcategoria_id`) VALUES
-(1, 'Disco Solido SSD 240GB Memox Sata III 2.5\"', 21486.00, 1, 'Memox', 0, '240 GB', 0.20, '500 MB/s', 'SATA Rev. 3.0 (6 Gb/s), retrocompatible con SATA Rev. 2.0 (3 Gb/s)', '/Componentes/Disco/01_a.jpg', NULL, NULL, 8),
-(2, 'Disco Solido SSD 480GB Kingston A400 SATA III (Similar 500GB 512GB)', 56100.00, 2, 'Kingston', 0, '480 GB', 0.28, '545 MB/s', 'SATA Rev. 3.0 (6 Gb/s), retrocompatible con SATA Rev. 2.0 (3 Gb/s)', '/Componentes/Disco/02_a.jpg', '/Componentes/Disco/02_b.jpg', '/Componentes/Disco/02_c.jpg', 8),
-(3, 'Disco Solido SSD 960GB Hiksemi Wave SATA III (Similar 1TB)', 21486.00, 3, 'Hiksemi', 1, '960 GB', 0.27, 'Lectura hasta 550 MB/s, Escritura hasta 480 MB/s', 'SATA Rev. 3.0 (6 Gb/s), retrocompatible con SATA Rev. 2.0 (3 Gb/s)', '/Componentes/Disco/03_a.jpg', NULL, NULL, 8),
-(4, 'Disco Solido SSD 960GB Patriot P310 M.2 NVMe PCIe x4 3.0', 83600.00, 4, 'Patriot', 0, '960 GB', 2.38, 'Lectura hasta 2100 MB/s, Escritura hasta 1800 MB/s', 'M.2 Nvme', '/Componentes/Disco/04_a.jpg', NULL, NULL, 8),
-(5, 'Disco Solido SSD 2TB Adata Legend 710 M.2 NVMe PCIe x4 3.0', 170500.00, 5, 'Adata', 0, '2 TB', 2.38, 'Lectura hasta 2400 MB/s, Escritura hasta 1800 MB/s', 'M.2', '/Componentes/Disco/05_a.jpg', '/Componentes/Disco/05_b.jpg', '/Componentes/Disco/05_c.jpg', 8),
-(6, 'Disco Solido SSD 1TB Corsair MP700 Pro M.2 NVMe PCIe Gen 5.0 x4 - BULK', 234200.00, 6, 'Corsair', 1, '1 TB', 0.30, 'Lectura hasta 11700 MB/s, Escritura hasta 9600 MB/s', 'M.2', '/Componentes/Disco/06_a.jpg', NULL, NULL, 8),
-(7, 'Disco Solido SSD 2TB Kingston Fury Renegade (Con Difusor Térmico) M.2 NVMe PCIe x4 4.0', 283600.00, 3, 'Kingston', 0, '2 TB', 2.80, 'Lectura hasta 7300 MB/s, Escritura hasta 7000 MB/s', 'M.2', '/Componentes/Disco/07_a.jpg', '/Componentes/Disco/07_b.jpg', '/Componentes/Disco/07_c.jpg', 8),
-(8, 'Disco Solido SSD 2TB Adata XPG G5 Mars 980 Pro Air Cooling M.2 NVMe PCIe Gen5 x4 - C/Cooler Disipado', 337000.00, 8, 'Adata', 0, '2 TB', 2.80, 'Lectura hasta 14000 MB/s, Escritura hasta 13000 MB/s', 'M.2', '/Componentes/Disco/08_a.jpg', '/Componentes/Disco/08_b.jpg', NULL, 8),
-(9, 'Disco Solido SSD 4TB Kingston Fury Renegade G5 M.2 NVMe PCIe 5.0 14.800MB/s', 914900.00, 9, 'Kingston', 0, '4 TB', 3.00, 'Lectura hasta 14800 MB/s, Escritura hasta 14000 MB/s', 'M.2', '/Componentes/Disco/09_a.jpg', NULL, NULL, 8);
+INSERT INTO `computacion_disco` (`id`, `nombre`, `precio`, `stock`, `fabricante`, `oferta`, `socket_disco`, `capacidad_gb`, `consumo`, `velocidad`, `conexion`, `foto1`, `foto2`, `foto3`, `subcategoria_id`) VALUES
+(1, 'Disco Solido SSD 240GB Memox Sata III 2.5\"', 21486.00, 1, 'Memox', 0, 'Sata', '240 GB', 0.20, '500 MB/s', 'SATA Rev. 3.0 (6 Gb/s), retrocompatible con SATA Rev. 2.0 (3 Gb/s)', '/Componentes/Disco/01_a.jpg', NULL, NULL, 8),
+(2, 'Disco Solido SSD 480GB Kingston A400 SATA III (Similar 500GB 512GB)', 56100.00, 2, 'Kingston', 0, 'Sata', '480 GB', 0.28, '545 MB/s', 'SATA Rev. 3.0 (6 Gb/s), retrocompatible con SATA Rev. 2.0 (3 Gb/s)', '/Componentes/Disco/02_a.jpg', '/Componentes/Disco/02_b.jpg', '/Componentes/Disco/02_c.jpg', 8),
+(3, 'Disco Solido SSD 960GB Hiksemi Wave SATA III (Similar 1TB)', 21486.00, 3, 'Hiksemi', 1, 'Sata', '960 GB', 0.27, 'Lectura hasta 550 MB/s, Escritura hasta 480 MB/s', 'SATA Rev. 3.0 (6 Gb/s), retrocompatible con SATA Rev. 2.0 (3 Gb/s)', '/Componentes/Disco/03_a.jpg', NULL, NULL, 8),
+(4, 'Disco Solido SSD 960GB Patriot P310 M.2 NVMe PCIe x4 3.0', 83600.00, 4, 'Patriot', 0, 'M.2', '960 GB', 2.38, 'Lectura hasta 2100 MB/s, Escritura hasta 1800 MB/s', 'M.2 Nvme', '/Componentes/Disco/04_a.jpg', NULL, NULL, 8),
+(5, 'Disco Solido SSD 2TB Adata Legend 710 M.2 NVMe PCIe x4 3.0', 170500.00, 5, 'Adata', 0, 'M.2', '2 TB', 2.38, 'Lectura hasta 2400 MB/s, Escritura hasta 1800 MB/s', 'M.2', '/Componentes/Disco/05_a.jpg', '/Componentes/Disco/05_b.jpg', '/Componentes/Disco/05_c.jpg', 8),
+(6, 'Disco Solido SSD 1TB Corsair MP700 Pro M.2 NVMe PCIe Gen 5.0 x4 - BULK', 234200.00, 6, 'Corsair', 1, 'M.2', '1 TB', 0.30, 'Lectura hasta 11700 MB/s, Escritura hasta 9600 MB/s', 'M.2', '/Componentes/Disco/06_a.jpg', NULL, NULL, 8),
+(7, 'Disco Solido SSD 2TB Kingston Fury Renegade (Con Difusor Térmico) M.2 NVMe PCIe x4 4.0', 283600.00, 3, 'Kingston', 0, 'M.2', '2 TB', 2.80, 'Lectura hasta 7300 MB/s, Escritura hasta 7000 MB/s', 'M.2', '/Componentes/Disco/07_a.jpg', '/Componentes/Disco/07_b.jpg', '/Componentes/Disco/07_c.jpg', 8),
+(8, 'Disco Solido SSD 2TB Adata XPG G5 Mars 980 Pro Air Cooling M.2 NVMe PCIe Gen5 x4 - C/Cooler Disipado', 337000.00, 8, 'Adata', 0, 'M.2', '2 TB', 2.80, 'Lectura hasta 14000 MB/s, Escritura hasta 13000 MB/s', 'M.2', '/Componentes/Disco/08_a.jpg', '/Componentes/Disco/08_b.jpg', NULL, 8),
+(9, 'Disco Solido SSD 4TB Kingston Fury Renegade G5 M.2 NVMe PCIe 5.0 14.800MB/s', 914900.00, 9, 'Kingston', 0, 'M.2', '4 TB', 3.00, 'Lectura hasta 14800 MB/s, Escritura hasta 14000 MB/s', 'M.2', '/Componentes/Disco/09_a.jpg', NULL, NULL, 8);
 
 -- --------------------------------------------------------
 
@@ -463,6 +499,7 @@ CREATE TABLE `computacion_fuente` (
   `eficiencia` varchar(150) NOT NULL,
   `ventilador` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `subcategoria_id` bigint NOT NULL,
+  `socket_fuente_gpu` varchar(200) NOT NULL,
   `foto1` varchar(100) DEFAULT NULL,
   `foto2` varchar(100) DEFAULT NULL,
   `foto3` varchar(100) DEFAULT NULL,
@@ -473,12 +510,12 @@ CREATE TABLE `computacion_fuente` (
 -- Volcado de datos para la tabla `computacion_fuente`
 --
 
-INSERT INTO `computacion_fuente` (`id`, `nombre`, `precio`, `stock`, `fabricante`, `oferta`, `consumo`, `eficiencia`, `ventilador`, `subcategoria_id`, `foto1`, `foto2`, `foto3`, `foto4`) VALUES
-(1, 'Fuente ATX 550W Perfomance', 23700.00, 4, 'Perfomance', 0, 500.00, '80 % Típicamente', '80 mm', 9, 'Componentes/Fuente/01_a.jpg', 'Componentes/Fuente/01_b.jpg', 'Componentes/Fuente/01_c.jpg', 'Componentes/Fuente/01_d.jpg'),
-(2, 'Fuente 550W Thermaltake LitePower', 65100.00, 4, 'Thermaltake', 0, 550.00, 'No especifica', 'Si (120mm)', 9, 'Componentes/Fuente/02_a.jpg', 'Componentes/Fuente/02_b.jpg', 'Componentes/Fuente/02_c.jpg', NULL),
-(3, 'Fuente 700W Adata XPG Probe 80 Plus Bronze', 88200.00, 3, 'Adata', 1, 700.00, '80 PLUS Bronze (hasta 87% a 50% de carga)', '120 mm con cojinete de manguito (2400 ±10% RPM)', 9, 'Componentes/Fuente/03_a.jpg', 'Componentes/Fuente/03_b.jpg', NULL, NULL),
-(4, 'Fuente 850W Sentey GSP850-GM 80 PLUS Gold - Modular', 135400.00, 6, 'Sentey', 0, 850.00, '90 %', '120 mm silencioso con control inteligente', 9, 'Componentes/Fuente/04_a.jpg', 'Componentes/Fuente/04_b.jpg', NULL, NULL),
-(5, 'Fuente 1000W Corsair HX1000 80 PLUS Platinum Modular', 444000.00, 7, 'Corsair', 1, 1000.00, '97 %', '140 mm con rodamientos de fluido dinámico (FDB) y modo Zero RPM', 9, 'Componentes/Fuente/05_a.jpg', 'Componentes/Fuente/05_b.jpg', 'Componentes/Fuente/05_c.jpg', 'Componentes/Fuente/05_d.jpg');
+INSERT INTO `computacion_fuente` (`id`, `nombre`, `precio`, `stock`, `fabricante`, `oferta`, `consumo`, `eficiencia`, `ventilador`, `subcategoria_id`, `socket_fuente_gpu`, `foto1`, `foto2`, `foto3`, `foto4`) VALUES
+(1, 'Fuente ATX 550W Perfomance', 23700.00, 4, 'Perfomance', 0, 500.00, '80 % Típicamente', '80 mm', 9, 'No', 'Componentes/Fuente/01_a.jpg', 'Componentes/Fuente/01_b.jpg', 'Componentes/Fuente/01_c.jpg', 'Componentes/Fuente/01_d.jpg'),
+(2, 'Fuente 550W Thermaltake LitePower', 65100.00, 4, 'Thermaltake', 0, 550.00, 'No especifica', 'Si (120mm)', 9, 'PCI3 x16', 'Componentes/Fuente/02_a.jpg', 'Componentes/Fuente/02_b.jpg', 'Componentes/Fuente/02_c.jpg', NULL),
+(3, 'Fuente 700W Adata XPG Probe 80 Plus Bronze', 88200.00, 3, 'Adata', 1, 700.00, '80 PLUS Bronze (hasta 87% a 50% de carga)', '120 mm con cojinete de manguito (2400 ±10% RPM)', 9, 'PCI3 x16', 'Componentes/Fuente/03_a.jpg', 'Componentes/Fuente/03_b.jpg', NULL, NULL),
+(4, 'Fuente 850W Sentey GSP850-GM 80 PLUS Gold - Modular', 135400.00, 6, 'Sentey', 0, 850.00, '90 %', '120 mm silencioso con control inteligente', 9, 'PCI3 x16', 'Componentes/Fuente/04_a.jpg', 'Componentes/Fuente/04_b.jpg', NULL, NULL),
+(5, 'Fuente 1000W Corsair HX1000 80 PLUS Platinum Modular', 444000.00, 7, 'Corsair', 1, 1000.00, '97 %', '140 mm con rodamientos de fluido dinámico (FDB) y modo Zero RPM', 9, 'PCI3 x16', 'Componentes/Fuente/05_a.jpg', 'Componentes/Fuente/05_b.jpg', 'Componentes/Fuente/05_c.jpg', 'Componentes/Fuente/05_d.jpg');
 
 -- --------------------------------------------------------
 
@@ -497,9 +534,9 @@ CREATE TABLE `computacion_gabinete` (
   `colores` varchar(150) NOT NULL,
   `usb` varchar(150) NOT NULL,
   `audio_hd` varchar(150) NOT NULL,
-  `ancho` int NOT NULL,
-  `alto` int NOT NULL,
-  `profundidad` int NOT NULL,
+  `ancho` varchar(50) NOT NULL,
+  `alto` varchar(50) NOT NULL,
+  `profundidad` varchar(50) NOT NULL,
   `ventiladores` varchar(150) NOT NULL,
   `incluidos` varchar(150) NOT NULL,
   `radiadores` varchar(150) NOT NULL,
@@ -519,16 +556,16 @@ CREATE TABLE `computacion_gabinete` (
 --
 
 INSERT INTO `computacion_gabinete` (`id`, `nombre`, `precio`, `stock`, `fabricante`, `oferta`, `ventana`, `colores`, `usb`, `audio_hd`, `ancho`, `alto`, `profundidad`, `ventiladores`, `incluidos`, `radiadores`, `consumo`, `foto1`, `foto2`, `foto3`, `foto4`, `foto5`, `foto6`, `foto7`, `subcategoria_id`) VALUES
-(1, 'Gabinete Sentey 6100-SF H10 negro - Sin Cooler Fan', 34900.00, 4, 'Sentey', 0, 'Vidrio templado frontal y lateral', 'Negro', '1 x 3.0, 2 x 2.0', 'Si', '195 cm', '410 cm', '310 cm', 'Soporta hasta 5 x 120 mm (superior, inferior y trasero)', 'No incluye ventiladores', 'Superior: hasta 240 mm', 5.000, 'Componentes/Gabinetes/01_a.jpg', 'Componentes/Gabinetes/01_b.jpg', 'Componentes/Gabinetes/01_c.jpg', NULL, NULL, NULL, NULL, 10),
-(2, 'Gabinete MSI Mag Shield M301 X1 Fan', 35500.00, 7, 'MSI', 0, 'No', 'Negro', '2 x 3.0, 1 x 2.0', 'Si', '206 cm', '352 cm', '345 cm', '1x 120 mm', 'Si', 'No incluye radiadores', 3.000, 'Componentes/Gabinetes/02_a.jpg', 'Componentes/Gabinetes/02_b.jpg', 'Componentes/Gabinetes/02_c.jpg', 'Componentes/Gabinetes/02_d.jpg', NULL, NULL, NULL, 10),
-(3, 'Gabinete Sentey 6100-SF H10 Blanco - Sin Cooler Fan', 36600.00, 6, 'Sentey', 0, 'Vidrio templado frontal y lateral', 'Blanco', '1 x 3.0, 2 x 2.0', 'Si', '195 cm', '410 cm', 310, 'Soporta hasta 5 x 120 mm (superior, inferior y trasero)', 'No incluye ventiladores', 'Superior: hasta 240 mm', 5.000, 'Componentes/Gabinetes/03_a.jpg', 'Componentes/Gabinetes/03_b.jpg', 'Componentes/Gabinetes/03_c.jpg', NULL, NULL, NULL, NULL, 10),
-(4, 'Gabinete Genesis IRID 503 V2 ARGB', 79900.00, 4, 'Genesis', 0, 'Vidrio templado', 'Negro', '1 x 3.0, 1 x 2.0', 'Si', '210 cm', '430 cm', '430 cm', 'Frontales: 2 x 140mm, 3 x 120mm - Traseros: 1 x 120 mm - Superiores: 2 x 120mm, 2 x 140mm', 'No incluye ventiladores', 'No incluye radiadores', 0.000, 'Componentes/Gabinetes/04_a.jpg', 'Componentes/Gabinetes/04_b.jpg', 'Componentes/Gabinetes/04_c.jpg', 'Componentes/Gabinetes/04_d.jpg', 'Componentes/Gabinetes/04_e.jpg', 'Componentes/Gabinetes/04_f.jpg', 'Componentes/Gabinetes/04_g.jpg', 10),
-(5, 'Gabinete Sentey GS-6130 H30 Blanco - Fan x5 Argb', 53500.00, 6, 'Sentey', 1, 'Paneles frontal y lateral de vidrio templado', 'Blanco', '1 x 3.0, 1 x 2.0', 'Si', '200 cm', '407 cm', '360 cm', 'Lateral: 2 x 120 mm ARGB (incluidos); Superior: 2 x 120 mm ARGB (incluidos); Trasero: 1 x 120 mm ARGB (incluido); Inferior: hasta 2 x 120 mm', 'Si', 'Superior o lateral: hasta 240 mm', 20.000, 'Componentes/Gabinetes/05_a.jpg', 'Componentes/Gabinetes/05_b.jpg', 'Componentes/Gabinetes/05_c.jpg', NULL, NULL, NULL, NULL, 10),
-(6, 'Gabinete Cooler Master Masterbox Q300L V2 ARGB', 88500.00, 5, 'Cooler Master', 0, 'Si', 'Negro', '2 x 3.0, 1 x 2.0', 'No', '230 cm', '383 cm', '387 cm', 'Frontales: 2 x 140mm - Traseros: 1 x 120 mm - Superiores: 2 x 120mm', 'No incluye ventiladores', '1 x 120 mm', 5.000, 'Componentes/Gabinetes/06_a.jpg', 'Componentes/Gabinetes/06_b.jpg', 'Componentes/Gabinetes/06_c.jpg', 'Componentes/Gabinetes/06_d.jpg', 'Componentes/Gabinetes/06_e.jpg', 'Componentes/Gabinetes/06_f.jpg', NULL, 10),
-(7, 'GGabinete Cooler Master Masterbox TD 300 Mesh Blanco ARGB', 115300.00, 6, 'Cooler Master', 0, 'Vidrio', 'Blanco', '3 x 3.0', 'Si', '206 cm', '352 cm', '345 cm', 'Frontales: 2 x 140mm - Traseros: 1 x 120 mm - Superiores: 2 x 120mm', 'No incluye ventiladores', 'No incluye radiadores', 0.000, 'Componentes/Gabinetes/07_a.jpg', 'Componentes/Gabinetes/07_b.jpg', 'Componentes/Gabinetes/07_c.jpg', 'Componentes/Gabinetes/07_d.jpg', NULL, NULL, NULL, 10),
-(8, 'Gabinete ADATA XPG Starker Air BTF Fan x4 ARGB - Blanco', 146300.00, 4, 'ADATA', 1, 'Vidrio templado 3 mm', 'Blanco', '1 x USB 3.2 Tipo-C, 2 x USB 3.2 Tipo-A', 'Sí (combo auric/micro)', '496 cm', '242 cm', '464 cm', 'Frontal/Superior: 3x120/3x140 - Trasero: 120/140 - Shroud: 3x120 - Lateral: 2x120 (al quitar bracket)', '4 x 120mm ARGB', 'Frontal/Superior: hasta 360/280/240mm - Trasero: hasta 140mm', 75.000, 'Componentes/Gabinetes/08_a.jpg', 'Componentes/Gabinetes/08_b.jpg', 'Componentes/Gabinetes/08_c.jpg', 'Componentes/Gabinetes/08_d.jpg', NULL, NULL, NULL, 10),
-(9, 'Gabinete Thermaltake The Tower 300 TG x2 Fan Bumblebee', 241100.00, 3, 'Thermaltake', 1, 'Paneles frontal y laterales de vidrio templado de 3 mm', 'Amarillo', '3 x 3.0', 'Si', '300 cm', '515 cm', '333 cm', 'Superior: 2 x 140 mm - Lado derecho: hasta 3x140 mm - Trasero: hasta 2x140 mm - Cubierta de la PSU: 1x140 mm', 'Superior: 2 x 140 mm', 'Lado derecho: hasta 420 mm', 47.250, 'Componentes/Gabinetes/09_a.jpg', 'Componentes/Gabinetes/09_b.jpg', 'Componentes/Gabinetes/09_c.jpg', NULL, NULL, NULL, NULL, 10),
-(10, 'Gabinete Thermaltake AH T200 Tempered Glass Black Micro Chassis', 224100.00, 4, 'Thermaltake', 0, 'Paneles laterales de vidrio templado de 4 mm', 'Negro', '2 x USB 3.0, 1 x USB 3.1 Gen 2 Tipo-C', 'Si', '282 cm', '444 cm', '552 cm', 'Frontal: 2 x 120/140 mm - Superior: 2 x 120/140 mm', 'No incluye ventiladores', 'Frontal: hasta 280 mm', 6.750, 'Componentes/Gabinetes/10_a.jpg', 'Componentes/Gabinetes/10_b.jpg', 'Componentes/Gabinetes/10_c.jpg', 'Componentes/Gabinetes/10_d.jpg', 'Componentes/Gabinetes/10_e.jpg', NULL, NULL, 10);
+(1, 'Gabinete Sentey 6100-SF H10 negro - Sin Cooler Fan', 34900.00, 4, 'Sentey', 0, 'Vidrio templado frontal y lateral', 'Negro', '1 x 3.0, 2 x 2.0', 'Si', '195', '410', '310', 'Soporta hasta 5 x 120 mm (superior, inferior y trasero)', 'No incluye ventiladores', 'Superior: hasta 240 mm', 5.000, 'Componentes/Gabinetes/01_a.jpg', 'Componentes/Gabinetes/01_b.jpg', 'Componentes/Gabinetes/01_c.jpg', NULL, NULL, NULL, NULL, 10),
+(2, 'Gabinete MSI Mag Shield M301 X1 Fan', 35500.00, 7, 'MSI', 0, 'No', 'Negro', '2 x 3.0, 1 x 2.0', 'Si', '206', '352', '345', '1x 120 mm', 'Si', 'No incluye radiadores', 3.000, 'Componentes/Gabinetes/02_a.jpg', 'Componentes/Gabinetes/02_b.jpg', 'Componentes/Gabinetes/02_c.jpg', 'Componentes/Gabinetes/02_d.jpg', NULL, NULL, NULL, 10),
+(3, 'Gabinete Sentey 6100-SF H10 Blanco - Sin Cooler Fan', 36600.00, 6, 'Sentey', 0, 'Vidrio templado frontal y lateral', 'Blanco', '1 x 3.0, 2 x 2.0', 'Si', '195', '410', '310', 'Soporta hasta 5 x 120 mm (superior, inferior y trasero)', 'No incluye ventiladores', 'Superior: hasta 240 mm', 5.000, 'Componentes/Gabinetes/03_a.jpg', 'Componentes/Gabinetes/03_b.jpg', 'Componentes/Gabinetes/03_c.jpg', 'Componentes/Gabinetes/03_d.jpg', NULL, NULL, NULL, 10),
+(4, 'Gabinete Genesis IRID 503 V2 ARGB', 79900.00, 4, 'Genesis', 0, 'Vidrio templado', 'Negro', '1 x 3.0, 1 x 2.0', 'Si', '210', '430', '430', 'Frontales: 2 x 140mm, 3 x 120mm - Traseros: 1 x 120 mm - Superiores: 2 x 120mm, 2 x 140mm', 'No incluye ventiladores', 'No incluye radiadores', 0.000, 'Componentes/Gabinetes/04_a.jpg', 'Componentes/Gabinetes/04_b.jpg', 'Componentes/Gabinetes/04_c.jpg', 'Componentes/Gabinetes/04_d.jpg', 'Componentes/Gabinetes/04_e.jpg', 'Componentes/Gabinetes/04_f.jpg', 'Componentes/Gabinetes/04_g.jpg', 10),
+(5, 'Gabinete Sentey GS-6130 H30 Blanco - Fan x5 Argb', 53500.00, 6, 'Sentey', 1, 'Paneles frontal y lateral de vidrio templado', 'Blanco', '1 x 3.0, 1 x 2.0', 'Si', '200', '407', '360', 'Lateral: 2 x 120 mm ARGB (incluidos); Superior: 2 x 120 mm ARGB (incluidos); Trasero: 1 x 120 mm ARGB (incluido); Inferior: hasta 2 x 120 mm', 'Si', 'Superior o lateral: hasta 240 mm', 20.000, 'Componentes/Gabinetes/05_a.jpg', 'Componentes/Gabinetes/05_b.jpg', 'Componentes/Gabinetes/05_c.jpg', NULL, NULL, NULL, NULL, 10),
+(6, 'Gabinete Cooler Master Masterbox Q300L V2 ARGB', 88500.00, 5, 'Cooler Master', 0, 'Si', 'Negro', '2 x 3.0, 1 x 2.0', 'No', '230', '383', '387', 'Frontales: 2 x 140mm - Traseros: 1 x 120 mm - Superiores: 2 x 120mm', 'No incluye ventiladores', '1 x 120 mm', 5.000, 'Componentes/Gabinetes/06_a.jpg', 'Componentes/Gabinetes/06_b.jpg', 'Componentes/Gabinetes/06_c.jpg', 'Componentes/Gabinetes/06_d.jpg', 'Componentes/Gabinetes/06_e.jpg', 'Componentes/Gabinetes/06_f.jpg', NULL, 10),
+(7, 'GGabinete Cooler Master Masterbox TD 300 Mesh Blanco ARGB', 115300.00, 6, 'Cooler Master', 0, 'Vidrio', 'Blanco', '3 x 3.0', 'Si', '206', '352', '345', 'Frontales: 2 x 140mm - Traseros: 1 x 120 mm - Superiores: 2 x 120mm', 'No incluye ventiladores', 'No incluye radiadores', 0.000, 'Componentes/Gabinetes/07_a.jpg', 'Componentes/Gabinetes/07_b.jpg', 'Componentes/Gabinetes/07_c.jpg', 'Componentes/Gabinetes/07_d.jpg', NULL, NULL, NULL, 10),
+(8, 'Gabinete ADATA XPG Starker Air BTF Fan x4 ARGB - Blanco', 146300.00, 4, 'ADATA', 1, 'Vidrio templado 3 mm', 'Blanco', '1 x USB 3.2 Tipo-C, 2 x USB 3.2 Tipo-A', 'Sí (combo auric/micro)', '496', '242', '464', 'Frontal/Superior: 3x120/3x140 - Trasero: 120/140 - Shroud: 3x120 - Lateral: 2x120 (al quitar bracket)', '4 x 120mm ARGB', 'Frontal/Superior: hasta 360/280/240mm - Trasero: hasta 140mm', 75.000, 'Componentes/Gabinetes/08_a.jpg', 'Componentes/Gabinetes/08_b.jpg', 'Componentes/Gabinetes/08_c.jpg', 'Componentes/Gabinetes/08_d.jpg', NULL, NULL, NULL, 10),
+(9, 'Gabinete Thermaltake The Tower 300 TG x2 Fan Bumblebee', 241100.00, 3, 'Thermaltake', 1, 'Paneles frontal y laterales de vidrio templado de 3 mm', 'Amarillo', '3 x 3.0', 'Si', '300', '515', '333', 'Superior: 2 x 140 mm - Lado derecho: hasta 3x140 mm - Trasero: hasta 2x140 mm - Cubierta de la PSU: 1x140 mm', 'Superior: 2 x 140 mm', 'Lado derecho: hasta 420 mm', 47.250, 'Componentes/Gabinetes/09_a.jpg', 'Componentes/Gabinetes/09_b.jpg', 'Componentes/Gabinetes/09_c.jpg', NULL, NULL, NULL, NULL, 10),
+(10, 'Gabinete Thermaltake AH T200 Tempered Glass Black Micro Chassis', 224100.00, 4, 'Thermaltake', 0, 'Paneles laterales de vidrio templado de 4 mm', 'Negro', '2 x USB 3.0, 1 x USB 3.1 Gen 2 Tipo-C', 'Si', '282', '444', '552', 'Frontal: 2 x 120/140 mm - Superior: 2 x 120/140 mm', 'No incluye ventiladores', 'Frontal: hasta 280 mm', 6.750, 'Componentes/Gabinetes/10_a.jpg', 'Componentes/Gabinetes/10_b.jpg', 'Componentes/Gabinetes/10_c.jpg', 'Componentes/Gabinetes/10_d.jpg', 'Componentes/Gabinetes/10_e.jpg', NULL, NULL, 10);
 
 -- --------------------------------------------------------
 
@@ -549,6 +586,7 @@ CREATE TABLE `computacion_gpu` (
   `memoria_velocidad` varchar(200) NOT NULL,
   `resolucion_max` varchar(200) NOT NULL,
   `refrigeracion` varchar(200) NOT NULL,
+  `socket_gpu` varchar(200) NOT NULL,
   `foto1` varchar(100) DEFAULT NULL,
   `foto2` varchar(100) DEFAULT NULL,
   `foto3` varchar(100) DEFAULT NULL,
@@ -561,17 +599,17 @@ CREATE TABLE `computacion_gpu` (
 -- Volcado de datos para la tabla `computacion_gpu`
 --
 
-INSERT INTO `computacion_gpu` (`id`, `nombre`, `precio`, `stock`, `fabricante`, `oferta`, `consumo`, `memoria_capacidad_gb`, `memoria_tipo`, `memoria_velocidad`, `resolucion_max`, `refrigeracion`, `foto1`, `foto2`, `foto3`, `foto4`, `foto5`, `subcategoria_id`) VALUES
-(1, 'Placa de Video Asus Nvidia Geforce GT 730 2GB GDDR5 Low Profile', 106400.00, 1, 'Asus', 1, 75.00, 2, 'GDDR5', '5 Gbps', 'No informada', 'No', '/Componentes/PlacaVideo/01_a.jpg', '/Componentes/PlacaVideo/01_b.jpg', '/Componentes/PlacaVideo/01_c.jpg', NULL, NULL, 5),
-(2, 'Placa de Video Asrock AMD Radeon RX 6500 XT Phantom Gaming D 4GB GDDR6 OC', 260300.00, 2, 'AMD', 1, 107.00, 4, 'GDDR6', '18 Gbps', '7680 x 4320 (8K)', 'No', '/Componentes/PlacaVideo/02_a.jpg', '/Componentes/PlacaVideo/02_b.jpg', '/Componentes/PlacaVideo/02_c.jpg', NULL, NULL, 5),
-(3, 'Placa de Video ASRock AMD Radeon RX 6600 Challenger D Dual Fan 8GB GDDR6', 378300.00, 3, 'AMD', 1, 132.00, 8, 'GDDR6', '14 Gbps', 'No informada', 'No', '/Componentes/PlacaVideo/03_a.jpg', '/Componentes/PlacaVideo/03_b.jpg', '/Componentes/PlacaVideo/03_c.jpg', NULL, NULL, 5),
-(4, 'Placa de Video Pny Geforce RTX 5060 8GB Dual Fan OC GDDR7', 504400.00, 4, 'Geforce', 0, 160.00, 8, 'GDDR7', '28 Gbps', '7680 x 4320 (8K UHD)', 'No', '/Componentes/PlacaVideo/04_a.jpg', '/Componentes/PlacaVideo/04_b.jpg', '/Componentes/PlacaVideo/04_c.jpg', '/Componentes/PlacaVideo/04_d.jpg', NULL, 5),
-(5, 'Placa de Video Pny Geforce RTX 5060 TI Epic X 8GB Triple Fan Argb OC GDDR7', 670300.00, 3, 'Geforce', 5, 185.00, 8, 'GDDR7', '28 Gbps', '7680 x 4320 (8K UHD)', 'No', '/Componentes/PlacaVideo/05_a.jpg', '/Componentes/PlacaVideo/05_b.jpg', '/Componentes/PlacaVideo/05_c.jpg', '/Componentes/PlacaVideo/05_d.jpg', '/Componentes/PlacaVideo/05_e.jpg', 5),
-(6, 'Placa de Video Gigabyte Nvidia Geforce RTX 5060 TI EAGLE ICE 8GB OC GDDR7', 731900.00, 2, 'Gigabyte', 6, 185.00, 8, 'GDDR7', '20 Gbps', '7680 x 4320', 'Cooler WINDFORCE Dual (HAWK fans, Alternate Spinning)', '/Componentes/PlacaVideo/06_a.jpg', '/Componentes/PlacaVideo/06_b.jpg', '/Componentes/PlacaVideo/06_c.jpg', '/Componentes/PlacaVideo/06_d.jpg', '/Componentes/PlacaVideo/06_e.jpg', 5),
-(7, 'Placa de Video Pny Geforce RTX 5060 TI 16GB STD Dual Fan OC GDDR7', 860700.00, 7, 'Geforce', 0, 185.00, 16, 'GDDR7', '20 Gbps', '7680 x 4320 (8K UHD)', 'Dual Fan (STD)', '/Componentes/PlacaVideo/07_a.jpg', '/Componentes/PlacaVideo/07_b.jpg', '/Componentes/PlacaVideo/07_c.jpg', '/Componentes/PlacaVideo/07_d.jpg', '/Componentes/PlacaVideo/07_e.jpg', 5),
-(8, 'Placa de Video Pny Geforce RTX 5070 EPIC X ARGB 12GB OC Triple Fan GDDR7', 1098500.00, 8, 'Geforce', 0, 250.00, 12, 'GDDR7', '28 Gbps', '8K (7680 x 4320), hasta 4 monitores', 'Triple ventilador axial (3 x 90mm), iluminación EPIC-X RGB', '/Componentes/PlacaVideo/08_a.jpg', '/Componentes/PlacaVideo/08_b.jpg', '/Componentes/PlacaVideo/08_c.jpg', '/Componentes/PlacaVideo/08_d.jpg', '/Componentes/PlacaVideo/08_e.jpg', 5),
-(9, 'Placa de Video AMD Radeon Asus RX 9070 PRIME OC 16GB GDDR6', 1133300.00, 9, 'AMD', 0, 220.00, 16, 'GDDR6', '20 Gbps', '7680 x 4320', 'Triple ventilador axial (3 x 90mm)', '/Componentes/PlacaVideo/09_a.jpg', '/Componentes/PlacaVideo/09_b.jpg', '/Componentes/PlacaVideo/09_c.jpg', '/Componentes/PlacaVideo/09_d.jpg', NULL, 5),
-(10, 'Placa de Video Gigabyte Nvidia Geforce RTX 5090 Gaming OC 32GB GDDR7', 5056700.00, 10, 'Gigabyte', 0, 575.00, 32, 'GDDR7', '28 Gbps', '7680 x 4320 (8K)', 'WINDFORCE con 3 ventiladores Hawk y cámara de vapor', '/Componentes/PlacaVideo/10_a.jpg', '/Componentes/PlacaVideo/10_b.jpg', '/Componentes/PlacaVideo/10_c.jpg', '/Componentes/PlacaVideo/10_d.jpg', NULL, 5);
+INSERT INTO `computacion_gpu` (`id`, `nombre`, `precio`, `stock`, `fabricante`, `oferta`, `consumo`, `memoria_capacidad_gb`, `memoria_tipo`, `memoria_velocidad`, `resolucion_max`, `refrigeracion`, `socket_gpu`, `foto1`, `foto2`, `foto3`, `foto4`, `foto5`, `subcategoria_id`) VALUES
+(1, 'Placa de Video Asus Nvidia Geforce GT 730 2GB GDDR5 Low Profile', 106400.00, 1, 'Asus', 1, 75.00, 2, 'GDDR5', '5 Gbps', 'No informada', 'No', 'PCI3 x16', '/Componentes/PlacaVideo/01_a.jpg', '/Componentes/PlacaVideo/01_b.jpg', '/Componentes/PlacaVideo/01_c.jpg', NULL, NULL, 5),
+(2, 'Placa de Video Asrock AMD Radeon RX 6500 XT Phantom Gaming D 4GB GDDR6 OC', 260300.00, 2, 'AMD', 1, 107.00, 4, 'GDDR6', '18 Gbps', '7680 x 4320 (8K)', 'No', 'PCI3 x16', '/Componentes/PlacaVideo/02_a.jpg', '/Componentes/PlacaVideo/02_b.jpg', '/Componentes/PlacaVideo/02_c.jpg', NULL, NULL, 5),
+(3, 'Placa de Video ASRock AMD Radeon RX 6600 Challenger D Dual Fan 8GB GDDR6', 378300.00, 3, 'AMD', 1, 132.00, 8, 'GDDR6', '14 Gbps', 'No informada', 'No', 'PCI3 x16', '/Componentes/PlacaVideo/03_a.jpg', '/Componentes/PlacaVideo/03_b.jpg', '/Componentes/PlacaVideo/03_c.jpg', NULL, NULL, 5),
+(4, 'Placa de Video Pny Geforce RTX 5060 8GB Dual Fan OC GDDR7', 504400.00, 4, 'Geforce', 0, 160.00, 8, 'GDDR7', '28 Gbps', '7680 x 4320 (8K UHD)', 'No', 'PCI3 x16', '/Componentes/PlacaVideo/04_a.jpg', '/Componentes/PlacaVideo/04_b.jpg', '/Componentes/PlacaVideo/04_c.jpg', '/Componentes/PlacaVideo/04_d.jpg', NULL, 5),
+(5, 'Placa de Video Pny Geforce RTX 5060 TI Epic X 8GB Triple Fan Argb OC GDDR7', 670300.00, 3, 'Geforce', 5, 185.00, 8, 'GDDR7', '28 Gbps', '7680 x 4320 (8K UHD)', 'No', 'PCI3 x16', '/Componentes/PlacaVideo/05_a.jpg', '/Componentes/PlacaVideo/05_b.jpg', '/Componentes/PlacaVideo/05_c.jpg', '/Componentes/PlacaVideo/05_d.jpg', '/Componentes/PlacaVideo/05_e.jpg', 5),
+(6, 'Placa de Video Gigabyte Nvidia Geforce RTX 5060 TI EAGLE ICE 8GB OC GDDR7', 731900.00, 2, 'Gigabyte', 6, 185.00, 8, 'GDDR7', '20 Gbps', '7680 x 4320', 'Cooler WINDFORCE Dual (HAWK fans, Alternate Spinning)', 'PCI3 x16', '/Componentes/PlacaVideo/06_a.jpg', '/Componentes/PlacaVideo/06_b.jpg', '/Componentes/PlacaVideo/06_c.jpg', '/Componentes/PlacaVideo/06_d.jpg', '/Componentes/PlacaVideo/06_e.jpg', 5),
+(7, 'Placa de Video Pny Geforce RTX 5060 TI 16GB STD Dual Fan OC GDDR7', 860700.00, 7, 'Geforce', 0, 185.00, 16, 'GDDR7', '20 Gbps', '7680 x 4320 (8K UHD)', 'Dual Fan (STD)', 'PCI3 x16', '/Componentes/PlacaVideo/07_a.jpg', '/Componentes/PlacaVideo/07_b.jpg', '/Componentes/PlacaVideo/07_c.jpg', '/Componentes/PlacaVideo/07_d.jpg', '/Componentes/PlacaVideo/07_e.jpg', 5),
+(8, 'Placa de Video Pny Geforce RTX 5070 EPIC X ARGB 12GB OC Triple Fan GDDR7', 1098500.00, 8, 'Geforce', 0, 250.00, 12, 'GDDR7', '28 Gbps', '8K (7680 x 4320), hasta 4 monitores', 'Triple ventilador axial (3 x 90mm), iluminación EPIC-X RGB', 'PCI3 x16', '/Componentes/PlacaVideo/08_a.jpg', '/Componentes/PlacaVideo/08_b.jpg', '/Componentes/PlacaVideo/08_c.jpg', '/Componentes/PlacaVideo/08_d.jpg', '/Componentes/PlacaVideo/08_e.jpg', 5),
+(9, 'Placa de Video AMD Radeon Asus RX 9070 PRIME OC 16GB GDDR6', 1133300.00, 9, 'AMD', 0, 220.00, 16, 'GDDR6', '20 Gbps', '7680 x 4320', 'Triple ventilador axial (3 x 90mm)', 'PCI3 x16', '/Componentes/PlacaVideo/09_a.jpg', '/Componentes/PlacaVideo/09_b.jpg', '/Componentes/PlacaVideo/09_c.jpg', '/Componentes/PlacaVideo/09_d.jpg', NULL, 5),
+(10, 'Placa de Video Gigabyte Nvidia Geforce RTX 5090 Gaming OC 32GB GDDR7', 5056700.00, 10, 'Gigabyte', 0, 575.00, 32, 'GDDR7', '28 Gbps', '7680 x 4320 (8K)', 'WINDFORCE con 3 ventiladores Hawk y cámara de vapor', 'PCI3 x16', '/Componentes/PlacaVideo/10_a.jpg', '/Componentes/PlacaVideo/10_b.jpg', '/Componentes/PlacaVideo/10_c.jpg', '/Componentes/PlacaVideo/10_d.jpg', NULL, 5);
 
 -- --------------------------------------------------------
 
@@ -627,7 +665,11 @@ CREATE TABLE `computacion_motherboard` (
   `fabricante` varchar(200) NOT NULL,
   `oferta` tinyint(1) NOT NULL,
   `memoria` varchar(200) NOT NULL,
-  `socket` varchar(200) NOT NULL,
+  `socket_memoria` varchar(200) NOT NULL,
+  `socket_gpu` varchar(200) NOT NULL,
+  `socket_sata_disco` varchar(200) NOT NULL,
+  `socket_M2_disco` varchar(200) NOT NULL,
+  `socket_cpu` varchar(200) NOT NULL,
   `sonido` varchar(200) NOT NULL,
   `puerto_sata` varchar(200) NOT NULL,
   `ranura_ram` varchar(200) NOT NULL,
@@ -648,17 +690,18 @@ CREATE TABLE `computacion_motherboard` (
 -- Volcado de datos para la tabla `computacion_motherboard`
 --
 
-INSERT INTO `computacion_motherboard` (`id`, `nombre`, `precio`, `stock`, `fabricante`, `oferta`, `memoria`, `socket`, `sonido`, `puerto_sata`, `ranura_ram`, `pci`, `usb`, `hdmi`, `vga`, `consumo`, `foto1`, `foto2`, `foto3`, `foto4`, `foto5`, `subcategoria_id`) VALUES
-(1, 'Motherboard Asus A520M-K Prime AM4', 81500.00, 1, 'Asus', 1, 'DDR4 - 2 (64 GB)', 'AM4', 'Realtek ALC887', '4', '2', '1', '4 (3.2) / 2 (2.0)', '1', 'No', 5.00, '/Componentes/PlacaMadre/01_a.jpg', 'Componentes/Componentes/PlacaMadre/01_b.jpg', '/Componentes/PlacaMadre/01_c.jpg', '/Componentes/PlacaMadre/01_d.jpg', NULL, 3),
-(2, 'Motherboard Gigabyte H510M-K V2 1200', 103800.00, 2, 'Gigabyte', 1, 'DDR4 - 2 (Max. 64 GB)', 'LGA1200', 'No informado', '4', '6', '2', '6 USB-A', 'Sí', 'No', 4.90, '/Componentes/PlacaMadre/02_a.jpg', '/Componentes/PlacaMadre/02_b.jpg', '/Componentes/PlacaMadre/02_c.jpg', NULL, NULL, 3),
-(3, 'Motherboard Asus Prime A620M-K DDR5 AM5', 118000.00, 3, 'Asus', 1, 'DDR5 - 2 (Máx. 96 GB)', 'AM5', 'No informado', '4', '4', '2', 'USB 3.2 Gen 1, USB 2.0', 'Sí (HDMI 2.1, 4K a 60Hz)', 'Sí', 60.00, '/Componentes/PlacaMadre/03_a.jpg', '/Componentes/PlacaMadre/03_b.jpg', '/Componentes/PlacaMadre/03_c.jpg', NULL, NULL, 3),
-(4, 'Motherboard Asrock B550 Phantom Gaming 4/ac AM4', 138500.00, 4, 'Asrock', 0, 'DDR4 - 4 (Max. 128 GB)', 'AM4', 'Realtek 1200 Codec', '4', '6', '2', '6 (3.2)', '1', 'No', 5.00, '/Componentes/PlacaMadre/04_a.jpg', '/Componentes/PlacaMadre/04_b.jpg', '/Componentes/PlacaMadre/04_c.jpg', '/Componentes/PlacaMadre/04_d.jpg', '/Componentes/PlacaMadre/04_e.jpg', 3),
-(5, 'Motherboard MSI B760M-E PRO DDR5 1700', 177700.00, 5, 'MSI', 0, 'DDR5 - 2 (hasta 128 GB)', 'LGA1700', 'Realtek® ALC1200 codec', '1', '4', '2', '4 x USB 2.0 (traseros), 4 x USB 2.0 (frontales), 2 x USB 3.2 Gen 1 Type-A (traseros), 2 x USB 3.2 Gen 1 Type-A (frontales)', '1', 'No', 4.80, '/Componentes/PlacaMadre/05_a.jpg', '/Componentes/PlacaMadre/05_b.jpg', '/Componentes/PlacaMadre/05_c.jpg', NULL, NULL, 3),
-(6, 'Motherboard Gigabyte B550 Aorus Elite AX V2 AM4', 301300.00, 6, 'Gigabyte', 0, 'DDR4 - 4 (Max. 128 GB)', 'AM4', 'Realtek® ALC1200 codec', '4', '6', '4', '5', '1', 'No', 70.00, '/Componentes/PlacaMadre/06_a.jpg', '/Componentes/PlacaMadre/06_b.jpg', '/Componentes/PlacaMadre/06_c.jpg', '/Componentes/PlacaMadre/06_d.jpg', '/Componentes/PlacaMadre/06_e.jpg', 3),
-(7, 'Motherboard Asus Tuf Gaming B650M-Plus WIFI AM5', 308500.00, 7, 'Asus', 0, 'DDR5 - 4 (Max. 128 GB)', 'AM5', 'Realtek® ALC1200 codec', '4', '6', '4', '7', 'Sí', 'No', 159.00, '/Componentes/PlacaMadre/07_a.jpg', '/Componentes/PlacaMadre/07_b.jpg', '/Componentes/PlacaMadre/07_c.jpg', NULL, NULL, 3),
-(8, 'Motherboard AsRock X870E Taichi Lite Wifi AM5 DDR5', 703800.00, 8, 'Asrock', 0, 'DDR5 - 4 (hasta 256 GB)', 'AM5', 'Realtek® ALC1200 codec', '4', '8', '4', '2 x USB4 Type-C, 5 x USB 3.2 Gen2 Type-A, 2 x USB 2.0', 'Sí', 'No', 396.00, '/Componentes/PlacaMadre/08_a.jpg', '/Componentes/PlacaMadre/08_b.jpg', NULL, NULL, NULL, 3),
-(9, 'Motherboard Gigabyte X870E AORUS MASTER AM5 DDR5', 767700.00, 9, 'Gigabyte', 0, 'DDR5 - 4 (hasta 128 GB)', 'AM5', 'Realtek® ALC1200 codec', '4 x SATA 6Gb/s', '8', '4', '2 x USB4 Type-C, USB 3.2 Gen 2x2', 'Sí, HDMI 2.1', 'No', 396.00, '/Componentes/PlacaMadre/09_a.jpg', '/Componentes/PlacaMadre/09_b.jpg', '/Componentes/PlacaMadre/09_c.jpg', '/Componentes/PlacaMadre/09_d.jpg', NULL, 3),
-(10, 'Motherboard Asus Rog Strix X870E - E Gaming Wifi AM5 DDR5', 957100.00, 10, 'Asus', 0, 'DDR5 - 4 (hasta 192 GB)', 'AM5', 'Realtek® ALC1200 codec', '4', '8', '4', '2 x USB4® Tipo-C®, 1 x USB 3.2 Gen 2 x 2 Tipo-C® (20 Gbps) con PD 3.0 hasta 30 W, 10 x USB 3.2 Gen 2 (10 Gbps)', '1', 'No', 396.00, '/Componentes/PlacaMadre/10_a.jpg', '/Componentes/PlacaMadre/10_b.jpg', NULL, NULL, NULL, 3);
+INSERT INTO `computacion_motherboard` (`id`, `nombre`, `precio`, `stock`, `fabricante`, `oferta`, `memoria`, `socket_memoria`, `socket_cpu`, `socket_gpu`, `socket_sata_disco`, `socket_M2_disco`, `sonido`, `puerto_sata`, `ranura_ram`, `pci`, `usb`, `hdmi`, `vga`, `consumo`, `foto1`, `foto2`, `foto3`, `foto4`, `foto5`, `subcategoria_id`) VALUES
+(1, 'Motherboard Asus A520M-K Prime AM4', 81500.00, 1, 'Asus', 1, 'DDR4 - 2 (64 GB)', 'DDR4', 'AM4', 'PCI3 x16', 'Si', 'Si', 'Realtek ALC887', '4', '2', '1', '4 (3.2) / 2 (2.0)', '1', 'No', 5.00, '/Componentes/PlacaMadre/01_a.jpg', 'Componentes/Componentes/PlacaMadre/01_b.jpg', '/Componentes/PlacaMadre/01_c.jpg', '/Componentes/PlacaMadre/01_d.jpg', NULL, 3),
+(2, 'Motherboard Gigabyte H510M-K V2 1200', 103800.00, 2, 'Gigabyte', 1, 'DDR4 - 2 (Max. 64 GB)', 'DDR4', '1200', 'PCI3 x16', 'Si', 'Si', 'No informado', '4', '6', '2', '6 USB-A', 'Sí', 'No', 4.90, '/Componentes/PlacaMadre/02_a.jpg', '/Componentes/PlacaMadre/02_b.jpg', '/Componentes/PlacaMadre/02_c.jpg', NULL, NULL, 3),
+(3, 'Motherboard Asus Prime A620M-K DDR5 AM5', 118000.00, 3, 'Asus', 1, 'DDR5 - 2 (Máx. 96 GB)', 'DDR5', 'AM5', 'PCI3 x16', 'Si', 'Si', 'No informado', '4', '4', '2', 'USB 3.2 Gen 1, USB 2.0', 'Sí (HDMI 2.1, 4K a 60Hz)', 'Sí', 60.00, '/Componentes/PlacaMadre/03_a.jpg', '/Componentes/PlacaMadre/03_b.jpg', '/Componentes/PlacaMadre/03_c.jpg', NULL, NULL, 3),
+(4, 'Motherboard Asrock B550 Phantom Gaming 4/ac AM4', 138500.00, 4, 'Asrock', 0, 'DDR4 - 4 (Max. 128 GB)', 'DDR4', 'AM4', 'PCI3 x16', 'Si', 'Si', 'Realtek 1200 Codec', '4', '6', '2', '6 (3.2)', '1', 'No', 5.00, '/Componentes/PlacaMadre/04_a.jpg', '/Componentes/PlacaMadre/04_b.jpg', '/Componentes/PlacaMadre/04_c.jpg', '/Componentes/PlacaMadre/04_d.jpg', '/Componentes/PlacaMadre/04_e.jpg', 3),
+(5, 'Motherboard MSI B760M-E PRO DDR5 1700', 177700.00, 5, 'MSI', 0, 'DDR5 - 2 (hasta 128 GB)', 'DDR5', '1700', 'PCI3 x16', 'Si', 'Si', 'Realtek® ALC1200 codec', '1', '4', '2', '4 x USB 2.0 (traseros), 4 x USB 2.0 (frontales), 2 x USB 3.2 Gen 1 Type-A (traseros), 2 x USB 3.2 Gen 1 Type-A (frontales)', '1', 'No', 4.80, '/Componentes/PlacaMadre/05_a.jpg', '/Componentes/PlacaMadre/05_b.jpg', '/Componentes/PlacaMadre/05_c.jpg', NULL, NULL, 3),
+(6, 'Motherboard Gigabyte B550 Aorus Elite AX V2 AM4', 301300.00, 6, 'Gigabyte', 0, 'DDR4 - 4 (Max. 128 GB)', 'DDR4', 'AM4', 'PCI3 x16', 'Si', 'Si',  'Realtek® ALC1200 codec', '4', '6', '4', '5', '1', 'No', 70.00, '/Componentes/PlacaMadre/06_a.jpg', '/Componentes/PlacaMadre/06_b.jpg', '/Componentes/PlacaMadre/06_c.jpg', '/Componentes/PlacaMadre/06_d.jpg', '/Componentes/PlacaMadre/06_e.jpg', 3),
+(7, 'Motherboard Asus Tuf Gaming B650M-Plus WIFI AM5', 308500.00, 7, 'Asus', 0, 'DDR5 - 4 (Max. 128 GB)', 'DDR5', 'AM5', 'PCI3 x16', 'No', 'Si', 'Realtek® ALC1200 codec', '4', '6', '4', '7', 'Sí', 'No', 159.00, '/Componentes/PlacaMadre/07_a.jpg', '/Componentes/PlacaMadre/07_b.jpg', '/Componentes/PlacaMadre/07_c.jpg', NULL, NULL, 3),
+(8, 'Motherboard AsRock X870E Taichi Lite Wifi AM5 DDR5', 703800.00, 8, 'Asrock', 0, 'DDR5 - 4 (hasta 256 GB)', 'DDR5', 'AM5', 'PCI3 x16', 'Si', 'Si', 'Realtek® ALC1200 codec', '4', '8', '4', '2 x USB4 Type-C, 5 x USB 3.2 Gen2 Type-A, 2 x USB 2.0', 'Sí', 'No', 396.00, '/Componentes/PlacaMadre/08_a.jpg', '/Componentes/PlacaMadre/08_b.jpg', NULL, NULL, NULL, 3),
+(9, 'Motherboard Gigabyte X870E AORUS MASTER AM5 DDR5', 767700.00, 9, 'Gigabyte', 0, 'DDR5 - 4 (hasta 128 GB)', 'DDR5', 'AM5', 'PCI3 x16', 'Si', 'Si', 'Realtek® ALC1200 codec', '4 x SATA 6Gb/s', '8', '4', '2 x USB4 Type-C, USB 3.2 Gen 2x2', 'Sí, HDMI 2.1', 'No', 396.00, '/Componentes/PlacaMadre/09_a.jpg', '/Componentes/PlacaMadre/09_b.jpg', '/Componentes/PlacaMadre/09_c.jpg', '/Componentes/PlacaMadre/09_d.jpg', NULL, 3),
+(10, 'Motherboard Asus Rog Strix X870E - E Gaming Wifi AM5 DDR5', 957100.00, 10, 'Asus', 0, 'DDR5 - 4 (hasta 192 GB)', 'DDR5', 'AM5', 'PCI3 x16', 'Si', 'Si', 'Realtek® ALC1200 codec', '4', '8', '4', '2 x USB4® Tipo-C®, 1 x USB 3.2 Gen 2 x 2 Tipo-C® (20 Gbps) con PD 3.0 hasta 30 W, 10 x USB 3.2 Gen 2 (10 Gbps)', '1', 'No', 396.00, '/Componentes/PlacaMadre/10_a.jpg', '/Componentes/PlacaMadre/10_b.jpg', NULL, NULL, NULL, 3);
+
 
 -- --------------------------------------------------------
 
@@ -722,7 +765,7 @@ CREATE TABLE `computacion_notebook` (
   `almacenamiento` varchar(50) NOT NULL,
   `pantalla_tamanio` varchar(50) NOT NULL,
   `pantalla_tactil` varchar(50) NOT NULL,
-  `pantalla_led` varchar(50) NOT NULL,
+  `pantalla_led` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `memoria_ram` varchar(100) NOT NULL,
   `gpu_dedicada` varchar(50) NOT NULL,
   `procesador` varchar(50) NOT NULL,
@@ -736,8 +779,8 @@ CREATE TABLE `computacion_notebook` (
 --
 
 INSERT INTO `computacion_notebook` (`id`, `nombre`, `precio`, `stock`, `fabricante`, `oferta`, `envio_gratis`, `sistema_operativo`, `usos`, `teclado_extra`, `almacenamiento`, `pantalla_tamanio`, `pantalla_tactil`, `pantalla_led`, `memoria_ram`, `gpu_dedicada`, `procesador`, `foto1`, `foto2`, `subcategoria_id`) VALUES
-(1, 'Lenovo IdeaPad 3', 1100000.00, 4, 'Lenovo', 1, 1, 'Windows', 'Diseño', 'No', '512 GB', '14\"', 'No', 'Si', '8 GB', 'No', 'AMD 5', 'Notebook/01_a.jpeg', 'Notebook/01_b.jpeg', 2),
-(2, 'Apple MacBook Air', 2200000.00, 3, 'Apple', 0, 1, 'MacOS', 'Diseño', 'No', '512 GB', '15.6\"', 'No', 'Si', '8 GB', 'No', 'AMD 5', 'Notebook/02_a.jpeg', 'Notebook/02_b.jpeg', 2),
+(1, 'Lenovo IdeaPad 3', 1100000.00, 4, 'Lenovo', 1, 1, 'Windows', 'Oficina', 'No', '512 GB', '14\"', 'No', 'Si', '8 GB', 'No', 'AMD 5', 'Notebook/01_a.jpeg', 'Notebook/01_b.jpeg', 2),
+(2, 'Apple MacBook Air', 2200000.00, 3, 'Apple', 0, 1, 'MacOS', 'Oficina', 'No', '512 GB', '15.6\"', 'No', 'Si', '8 GB', 'No', 'AMD 5', 'Notebook/02_a.jpeg', 'Notebook/02_b.jpeg', 2),
 (3, 'HP Pavilion 15', 1050000.00, 4, 'HP', 1, 0, 'Windows', 'Oficina', 'No', '512 GB', '15.6\"', 'No', 'Si', '8 GB', 'No', 'AMD 7', 'Notebook/03_a.jpeg', 'Notebook/03_b.jpeg', 2),
 (4, 'Dell Vostro 3400', 980000.00, 5, 'Dell', 0, 1, 'Linux', 'Oficina', 'No', '512 GB', '15.6\"', 'No', 'Si', '16 GB', 'No', 'Intel Core i7', 'Notebook/04_a.jpeg', 'Notebook/04_b.jpeg', 2),
 (5, 'Samsung Chromebook', 870000.00, 4, 'Samsung', 1, 1, 'Chrome OS', 'Oficina', 'No', '512 GB', '15.6\"', 'No', 'Si', '8 GB', 'No', 'Intel core i5', 'Notebook/05_a.jpeg', 'Notebook/05_b.jpeg', 2),
@@ -793,7 +836,7 @@ CREATE TABLE `computacion_pcescritorio` (
   `almacenamiento` varchar(50) NOT NULL,
   `pantalla_tamanio` varchar(50) NOT NULL,
   `pantalla_tactil` varchar(50) NOT NULL,
-  `pantalla_led` varchar(50) NOT NULL,
+  `pantalla_led` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `memoria_ram` varchar(50) NOT NULL,
   `gpu_dedicada` varchar(50) NOT NULL,
   `procesador` varchar(50) NOT NULL,
@@ -807,10 +850,10 @@ CREATE TABLE `computacion_pcescritorio` (
 --
 
 INSERT INTO `computacion_pcescritorio` (`id`, `nombre`, `precio`, `stock`, `fabricante`, `oferta`, `envio_gratis`, `sistema_operativo`, `teclado_extra`, `usos`, `almacenamiento`, `pantalla_tamanio`, `pantalla_tactil`, `pantalla_led`, `memoria_ram`, `gpu_dedicada`, `procesador`, `foto1`, `foto2`, `subcategoria_id`) VALUES
-(1, 'Dell Inspiron 3880', 850000.00, 3, 'Dell', 1, 1, 'Windows', 'No', 'Diseño', '480 GB', '27\"', 'No', 'Si', '8 GB', 'No', 'Intel Core i7', 'CompuArmada/01_a.jpeg', 'CompuArmada/01_b.jpeg', 1),
-(2, 'Lenovo IdeaCentre 3', 750000.00, 4, 'Lenovo', 0, 0, 'Linux', 'No', 'Diseño', '1 TB', '21.5\"', 'Si', 'Si', '4 GB', 'No', 'AMD 5', 'CompuArmada/02_a.jpeg', 'CompuArmada/02_b.jpeg', 1),
-(3, 'HP Pavilion TP01', 920000.00, 3, 'HP', 1, 1, 'Windows', 'No', 'Diseño', '256 GB', '21.5\"', 'No', 'Si', '8 GB', 'No', 'Intel Core i5', 'CompuArmada/03_a.webp', 'CompuArmada/03_b.webp', 1),
-(4, 'Asus M32CD', 600000.00, 6, 'Asus', 0, 0, 'DOS', 'No', 'Gamer', '512 GB', '21.5\"', 'No', 'No', '16 GB', 'Si', 'AMD 5', 'CompuArmada/04_a.jpeg', 'CompuArmada/04_b.jpeg', 1),
+(1, 'Dell Inspiron 3880', 850000.00, 3, 'Dell', 1, 1, 'Windows', 'No', 'Oficina', '480 GB', '27\"', 'No', 'Si', '8 GB', 'No', 'Intel Core i7', 'CompuArmada/01_a.jpeg', 'CompuArmada/01_b.jpeg', 1),
+(2, 'Lenovo IdeaCentre 3', 750000.00, 4, 'Lenovo', 0, 0, 'Linux', 'No', 'Oficina', '1 TB', '21.5\"', 'Si', 'Si', '4 GB', 'No', 'AMD 5', 'CompuArmada/02_a.jpeg', 'CompuArmada/02_b.jpeg', 1),
+(3, 'HP Pavilion TP01', 920000.00, 3, 'HP', 1, 1, 'Windows', 'No', 'Oficina', '256 GB', '21.5\"', 'No', 'Si', '8 GB', 'No', 'Intel Core i5', 'CompuArmada/03_a.webp', 'CompuArmada/03_b.webp', 1),
+(4, 'Asus M32CD', 600000.00, 6, 'Asus', 0, 0, 'DOS', 'No', 'GAMER', '512 GB', '21.5\"', 'No', 'No', '16 GB', 'Si', 'AMD 5', 'CompuArmada/04_a.jpeg', 'CompuArmada/04_b.jpeg', 1),
 (5, 'Acer Aspire TC', 950000.00, 3, 'Asus', 1, 1, 'Windows', 'No', 'Gamer', '512 GB', '21.5\"', 'No', 'Si', '16 GB', 'Si', 'AMD 7', 'CompuArmada/05_a.jpeg', 'CompuArmada/05_b.jpeg', 1),
 (6, 'Samsung Desktop', 820000.00, 3, 'Samsung', 0, 0, 'Linux', 'No', 'Gamer', '512 GB', '21.5\"', 'No', 'Si', '16 GB', 'Si', 'AMD 7', 'CompuArmada/06_a.jpeg', 'CompuArmada/06_b.jpeg', 1),
 (7, 'Apple iMac', 1500000.00, 3, 'Apple', 0, 1, 'McOS', 'No', 'Oficina', '960 GB', '21.5\"', 'No', 'Si', '8 GB', 'Si', 'Intel Core i5', 'CompuArmada/07_a.jpeg', 'CompuArmada/07_b.jpeg', 1),
@@ -845,7 +888,7 @@ CREATE TABLE `computacion_placa_wifi` (
 --
 
 INSERT INTO `computacion_placa_wifi` (`id`, `nombre`, `precio`, `stock`, `fabricante`, `oferta`, `frecuencia`, `velocidad`, `consumo`, `foto1`, `foto2`, `foto3`, `subcategoria_id`) VALUES
-(1, 'Placa de Red PCIe WIFI Tp-Link TL-WN881ND 2.4 Ghz 300Mbps', 16500.00, 5, 'Tp-Link', 1, '2.400-2.4835GHz', '11 Mbps - 300 Mbps', 2.00, '/Componentes/PlacaWifi/01_a.jpg', '/Componentes/PlacaWifi/01_b.jpg', '/Componentes/PlacaWifi/01_c.jpg', 16),
+(1, 'Placa de Red PCIe WIFI Tp-Link TL-WN881ND 2.4 Ghz 300Mbps', 16500.00, 4, 'Tp-Link', 1, '2.400-2.4835GHz', '11 Mbps - 300 Mbps', 2.00, '/Componentes/PlacaWifi/01_a.jpg', '/Componentes/PlacaWifi/01_b.jpg', '/Componentes/PlacaWifi/01_c.jpg', 16),
 (2, 'Placa de Red WIFI Usb Tp-Link Archer TX10UB Nano AX900 Dual Band 2.4/5Ghz - Wifi 6 + BT', 21500.00, 5, 'Tp-Link', 1, '2.400-2.4835GHz', 'Hasta 900 Mbps (600 Mbps @5 GHz + 300 Mbps @2.4 GHz)', 2.00, '/Componentes/PlacaWifi/02_a.jpg', '/Componentes/PlacaWifi/02_b.jpg', NULL, 16),
 (3, 'Placa de Red Usb WIFI Tp-Link Archer TXE50UH AXE3000 Triple Band High Gain 2.4/5/6Ghz - Wifi 6E', 14785.00, 5, 'Tp-Link', 1, '2.400-2.4835GHz', '2.4 GHz: hasta 574 Mbps / 5 GHz: hasta 1201 Mbps / 6 GHz: hasta 1201 Mbps', 3.00, '/Componentes/PlacaWifi/03_a.jpg', '/Componentes/PlacaWifi/03_b.jpg', NULL, 16);
 
@@ -964,7 +1007,7 @@ INSERT INTO `computacion_subcategoria` (`id`, `nombre`, `categoria_id`) VALUES
 (4, 'Cpu', 2),
 (5, 'Gpu', 2),
 (6, 'Ram', 2),
-(7, 'Cooler', 2),
+(7, 'Cooler', 3),
 (8, 'Disco', 2),
 (9, 'Fuente', 2),
 (10, 'Gabinete', 2),
@@ -1056,6 +1099,7 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (2, 'auth', 'permission'),
 (4, 'auth', 'user'),
 (35, 'carrito', 'carritoitem'),
+(42, 'carrito', 'localidadargentina'),
 (34, 'carrito', 'producto'),
 (7, 'computacion', 'categoria'),
 (23, 'computacion', 'cooler'),
@@ -1079,10 +1123,15 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (32, 'encuesta', 'encuesta'),
 (33, 'encuesta', 'resultado'),
 (36, 'productos', 'producto'),
+(40, 'proveedor', 'proveedores'),
 (6, 'sessions', 'session'),
+(39, 'usuario', 'favoritoproducto'),
+(38, 'usuario', 'interes'),
 (28, 'usuario', 'menu'),
 (30, 'usuario', 'menurol'),
+(37, 'usuario', 'perfil'),
 (29, 'usuario', 'rol'),
+(41, 'usuario', 'usuarioextra'),
 (31, 'usuario', 'usuariorol'),
 (27, 'venta', 'detalleventa'),
 (26, 'venta', 'qrventa'),
@@ -1131,7 +1180,15 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (23, 'sessions', '0001_initial', '2025-10-10 20:52:17.744380'),
 (24, 'usuario', '0001_initial', '2025-10-10 20:52:19.100642'),
 (25, 'venta', '0001_initial', '2025-10-10 20:52:20.321494'),
-(26, 'computacion', '0002_remove_fuente_foto_fuente_foto1_fuente_foto2_and_more', '2025-10-11 00:19:38.678827');
+(26, 'computacion', '0002_remove_fuente_foto_fuente_foto1_fuente_foto2_and_more', '2025-10-11 00:19:38.678827'),
+(27, 'carrito', '0002_carritoitem_content_type_carritoitem_object_id', '2025-10-22 02:10:32.679338'),
+(28, 'usuario', '0002_remove_menurol_menu_remove_menurol_rol_and_more', '2025-10-22 02:10:35.504861'),
+(29, 'computacion', '0002_alter_gabinete_alto_alter_gabinete_ancho_and_more', '2025-10-22 17:55:59.691367'),
+(30, 'usuario', '0003_alter_perfil_biografia', '2025-10-23 14:38:10.628458'),
+(31, 'usuario', '0004_rename_usuario_perfil_user', '2025-10-27 03:25:38.031980'),
+(32, 'proveedor', '0001_initial', '2025-10-29 00:24:43.861340'),
+(33, 'carrito', '0002_localidadargentina', '2025-10-30 13:32:52.159075'),
+(34, 'usuario', '0005_usuarioextra', '2025-10-30 13:32:52.351314');
 
 -- --------------------------------------------------------
 
@@ -1173,6 +1230,63 @@ CREATE TABLE `encuesta_resultado` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `localidades_argentina`
+--
+
+CREATE TABLE `localidades_argentina` (
+  `id` bigint NOT NULL,
+  `provincia` varchar(100) NOT NULL,
+  `localidad` varchar(100) NOT NULL,
+  `codigo_postal` varchar(10) NOT NULL,
+  `costo_envio` decimal(8,2) NOT NULL,
+  `latitud` decimal(6,4) NOT NULL,
+  `longitud` decimal(6,4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `localidades_argentina`
+--
+
+INSERT INTO `localidades_argentina` (`id`, `provincia`, `localidad`, `codigo_postal`, `costo_envio`, `latitud`, `longitud`) VALUES
+INSERT INTO localidades_argentina (provincia, localidad, codigo_postal, costo_envio, latitud, longitud) VALUES
+('Buenos Aires', 'La Plata', '1900', 5226.17, -34.9211, -57.9544),
+('Buenos Aires', 'Mar del Plata', '7600', 4976.06, -38.0000, -57.5500),
+('Buenos Aires', 'Bahía Blanca', '8000', 2621.63, -38.7167, -62.2667),
+('Buenos Aires', 'Tandil', '7000', 4225.30, -37.3217, -59.1332),
+('Buenos Aires', 'Olavarría', '7400', 3780.53, -36.8927, -60.3225),
+('Córdoba', 'Córdoba ciudad', '5000', 5031.10, -31.4167, -64.1833),
+('Córdoba', 'Villa Carlos Paz', '5152', 4951.73, -31.4241, -64.4978),
+('Córdoba', 'Río Cuarto', '5800', 4090.56, -33.1330, -64.3500),
+('Mendoza', 'Mendoza ciudad', '5500', 3492.80, -32.8884, -68.8388),
+('Mendoza', 'San Rafael', '5600', 2550.70, -34.5880, -68.2855),
+('Mendoza', 'Godoy Cruz', '5501', 3481.42, -32.9253, -68.8440),
+('San Luis', 'San Luis ciudad', '5700', 3346.08, -32.5000, -65.7800),
+('San Luis', 'Villa Mercedes', '5730', 2710.15, -33.7000, -65.4300),
+('La Pampa', 'Santa Rosa', '6300', 2267.45, -36.6167, -64.2833),
+('La Pampa', 'General Pico', '6360', 2838.16, -35.6400, -63.7600),
+('Neuquén', 'Neuquén ciudad', '8300', 100.00, -38.9516, -68.0591),
+('Río Negro', 'Cipolletti', '8322', 103.33, -38.9500, -67.9900),
+('Río Negro', 'Viedma', '8500', 216.10, -40.8000, -62.9890),
+('Río Negro', 'General Roca', '8332', 127.41, -39.0340, -67.5710),
+('Río Negro', 'Bariloche', '8400', 403.58, -41.1333, -71.3085),
+('Santa Cruz', 'Río Gallegos', '9400', 1381.08, -51.6230, -69.2168),
+('Tierra del Fuego', 'Río Grande', '9410', 1725.64, -53.7877, -67.7095),
+('Salta', 'Salta ciudad', '4400', 8890.07, -24.8065, -65.4200),
+('Jujuy', 'San Salvador de Jujuy', '4600', 9167.25, -24.1850, -65.3022),
+('Tucumán', 'San Miguel de Tucumán', '4000', 7486.52, -26.8241, -65.2226),
+('Chaco', 'Resistencia', '3500', 8130.74, -27.4516, -58.9861),
+('Entre Ríos', 'Paraná', '3100', 5560.50, -31.7333, -60.5333),
+('Santa Fe', 'Santa Fe ciudad', '3000', 5520.50, -31.6333, -60.7000),
+('Santa Fe', 'Rosario', '2000', 4937.70, -32.9500, -60.6667),
+('La Rioja', 'La Rioja ciudad', '5300', 5568.22, -29.4116, -66.8500),
+('San Juan', 'San Juan ciudad', '5400', 4336.46, -31.5360, -68.5261),
+('Neuquén', 'Plottier', '8316', 103.71, -38.9967, -68.2744),
+('Río Negro', 'Allen', '8328', 103.82, -38.9514, -67.5732),
+('Río Negro', 'Cipolletti', '8322', 103.33, -38.9500, -67.9900);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `productos_producto`
 --
 
@@ -1188,50 +1302,113 @@ CREATE TABLE `productos_producto` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuario_menu`
+-- Estructura de tabla para la tabla `proveedor_proveedores`
 --
 
-CREATE TABLE `usuario_menu` (
+CREATE TABLE `proveedor_proveedores` (
   `id` bigint NOT NULL,
   `nombre` varchar(100) NOT NULL,
-  `url` varchar(255) NOT NULL,
-  `icono` varchar(100) DEFAULT NULL
+  `contacto` varchar(100) NOT NULL,
+  `telefono` varchar(100) NOT NULL,
+  `email` varchar(254) NOT NULL,
+  `cuit` varchar(150) NOT NULL,
+  `activo` tinyint(1) NOT NULL,
+  `categoria` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `proveedor_proveedores`
+--
+
+INSERT INTO `proveedor_proveedores` (`id`, `nombre`, `contacto`, `telefono`, `email`, `cuit`, `activo`, `categoria`) VALUES
+(1, 'TechDistribuidora SA', 'Juan Pérez', '+54 11 4567-8900', 'ventas@techdist.com', '20-12345678-9', 1, 'hardware'),
+(2, 'Componentes Pro', 'María González', '+54 11 5678-9012', 'info@componentespro.com', '30-98765432-1', 0, 'hardware'),
+(3, 'Periféricos Import', 'Carlos Rodríguez', '+54 11 6789-0123', 'contacto@perifimport.com', '27-45678901-2', 0, 'hardware'),
+(4, 'Embalajes del Sur', 'Ana Martínez', '+54 11 7890-1234', 'ventas@embalajesur.com', '33-23456789-0', 1, 'otros'),
+(5, 'Logística Express', 'Roberto Silva', '+54 11 8901-2345', 'info@logexpress.com', '30-34567890-1', 0, 'otros');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuario_menurol`
+-- Estructura de tabla para la tabla `usuario_favoritoproducto`
 --
 
-CREATE TABLE `usuario_menurol` (
+CREATE TABLE `usuario_favoritoproducto` (
   `id` bigint NOT NULL,
-  `menu_id` bigint NOT NULL,
-  `rol_id` bigint NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `object_id` int UNSIGNED NOT NULL,
+  `added_at` datetime(6) NOT NULL,
+  `content_type_id` int NOT NULL,
+  `perfil_id` bigint NOT NULL
+) ;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuario_rol`
+-- Estructura de tabla para la tabla `usuario_interes`
 --
 
-CREATE TABLE `usuario_rol` (
+CREATE TABLE `usuario_interes` (
   `id` bigint NOT NULL,
-  `nombre` varchar(100) NOT NULL
+  `nombre` varchar(50) NOT NULL,
+  `perfil_id` bigint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `usuario_interes`
+--
+
+INSERT INTO `usuario_interes` (`id`, `nombre`, `perfil_id`) VALUES
+(4, 'Café y largas sesiones de código', 1),
+(1, 'Desarrollo web con Django y React', 1),
+(2, 'Optimización de rendimiento en hardware', 1),
+(3, 'Videojuegos retro', 1),
+(6, 'Automatización con Python', 2),
+(5, 'Diseño de interfaces con React y Figma', 2),
+(7, 'Fotografía digital', 2),
+(8, 'Música electrónica', 2);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuario_usuariorol`
+-- Estructura de tabla para la tabla `usuario_perfil`
 --
 
-CREATE TABLE `usuario_usuariorol` (
+CREATE TABLE `usuario_perfil` (
   `id` bigint NOT NULL,
-  `rol_id` bigint NOT NULL,
+  `biografia` longtext,
+  `avatar` varchar(100) DEFAULT NULL,
+  `experiencia` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `user_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `usuario_perfil`
+--
+
+INSERT INTO `usuario_perfil` (`id`, `biografia`, `avatar`, `experiencia`, `user_id`) VALUES
+(1, 'Apasionado por la programación y el hardware. Siempre buscando optimizar código y armar la PC perfecta.', '/Usuarios/lolo.webp', 'Desarrollador autodidacta con proyectos en Python, JavaScript y ensamblaje de computadoras personalizadas.', 1),
+(2, 'Entusiasta de la tecnología y la programación. Ama combinar creatividad y lógica en cada proyecto.', '/Usuarios/lulu.jpg', 'Desarrolladora full stack con experiencia en React, Django y mantenimiento de equipos informáticos.', 2),
+(3, NULL, '', 'principiante', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario_usuarioextra`
+--
+
+CREATE TABLE `usuario_usuarioextra` (
+  `id` bigint NOT NULL,
+  `codigo_postal` varchar(10) NOT NULL,
   `usuario_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `usuario_usuarioextra`
+--
+
+INSERT INTO `usuario_usuarioextra` (`id`, `codigo_postal`, `usuario_id`) VALUES
+(1, '8500', 2),
+(2, '9410', 3);
 
 -- --------------------------------------------------------
 
@@ -1326,8 +1503,8 @@ ALTER TABLE `auth_user_user_permissions`
 --
 ALTER TABLE `carrito_carritoitem`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `carrito_carritoitem_usuario_id_producto_id_6d0254f6_uniq` (`usuario_id`,`producto_id`),
-  ADD KEY `carrito_carritoitem_producto_id_16bca47d_fk_carrito_producto_id` (`producto_id`);
+  ADD KEY `fk_usuario` (`usuario_id`),
+  ADD KEY `fk_content_type` (`content_type_id`);
 
 --
 -- Indices de la tabla `carrito_producto`
@@ -1503,38 +1680,51 @@ ALTER TABLE `encuesta_resultado`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `localidades_argentina`
+--
+ALTER TABLE `localidades_argentina`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `productos_producto`
 --
 ALTER TABLE `productos_producto`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `usuario_menu`
+-- Indices de la tabla `proveedor_proveedores`
 --
-ALTER TABLE `usuario_menu`
+ALTER TABLE `proveedor_proveedores`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `usuario_menurol`
+-- Indices de la tabla `usuario_favoritoproducto`
 --
-ALTER TABLE `usuario_menurol`
+ALTER TABLE `usuario_favoritoproducto`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `usuario_menurol_menu_id_515bc9c5_fk_usuario_menu_id` (`menu_id`),
-  ADD KEY `usuario_menurol_rol_id_e78188dd_fk_usuario_rol_id` (`rol_id`);
+  ADD UNIQUE KEY `usuario_favoritoproducto_perfil_id_content_type_i_8bd2f611_uniq` (`perfil_id`,`content_type_id`,`object_id`),
+  ADD KEY `usuario_favoritoprod_content_type_id_45a7caf7_fk_django_co` (`content_type_id`);
 
 --
--- Indices de la tabla `usuario_rol`
+-- Indices de la tabla `usuario_interes`
 --
-ALTER TABLE `usuario_rol`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `usuario_interes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `usuario_interes_perfil_id_nombre_8bd01d08_uniq` (`perfil_id`,`nombre`);
 
 --
--- Indices de la tabla `usuario_usuariorol`
+-- Indices de la tabla `usuario_perfil`
 --
-ALTER TABLE `usuario_usuariorol`
+ALTER TABLE `usuario_perfil`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `usuario_usuariorol_rol_id_3c19af4d_fk_usuario_rol_id` (`rol_id`),
-  ADD KEY `usuario_usuariorol_usuario_id_48f9d5e9_fk_auth_user_id` (`usuario_id`);
+  ADD UNIQUE KEY `usuario_id` (`user_id`);
+
+--
+-- Indices de la tabla `usuario_usuarioextra`
+--
+ALTER TABLE `usuario_usuarioextra`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `usuario_id` (`usuario_id`);
 
 --
 -- Indices de la tabla `venta_detalleventa`
@@ -1578,13 +1768,13 @@ ALTER TABLE `auth_group_permissions`
 -- AUTO_INCREMENT de la tabla `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=145;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=169;
 
 --
 -- AUTO_INCREMENT de la tabla `auth_user`
 --
 ALTER TABLE `auth_user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `auth_user_groups`
@@ -1602,7 +1792,7 @@ ALTER TABLE `auth_user_user_permissions`
 -- AUTO_INCREMENT de la tabla `carrito_carritoitem`
 --
 ALTER TABLE `carrito_carritoitem`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT de la tabla `carrito_producto`
@@ -1728,13 +1918,13 @@ ALTER TABLE `django_admin_log`
 -- AUTO_INCREMENT de la tabla `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT de la tabla `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT de la tabla `encuesta_encuesta`
@@ -1749,34 +1939,46 @@ ALTER TABLE `encuesta_resultado`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `localidades_argentina`
+--
+ALTER TABLE `localidades_argentina`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
 -- AUTO_INCREMENT de la tabla `productos_producto`
 --
 ALTER TABLE `productos_producto`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `usuario_menu`
+-- AUTO_INCREMENT de la tabla `proveedor_proveedores`
 --
-ALTER TABLE `usuario_menu`
+ALTER TABLE `proveedor_proveedores`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario_favoritoproducto`
+--
+ALTER TABLE `usuario_favoritoproducto`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `usuario_menurol`
+-- AUTO_INCREMENT de la tabla `usuario_interes`
 --
-ALTER TABLE `usuario_menurol`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+ALTER TABLE `usuario_interes`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT de la tabla `usuario_rol`
+-- AUTO_INCREMENT de la tabla `usuario_perfil`
 --
-ALTER TABLE `usuario_rol`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+ALTER TABLE `usuario_perfil`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT de la tabla `usuario_usuariorol`
+-- AUTO_INCREMENT de la tabla `usuario_usuarioextra`
 --
-ALTER TABLE `usuario_usuariorol`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+ALTER TABLE `usuario_usuarioextra`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `venta_detalleventa`
@@ -1831,8 +2033,8 @@ ALTER TABLE `auth_user_user_permissions`
 -- Filtros para la tabla `carrito_carritoitem`
 --
 ALTER TABLE `carrito_carritoitem`
-  ADD CONSTRAINT `carrito_carritoitem_producto_id_16bca47d_fk_carrito_producto_id` FOREIGN KEY (`producto_id`) REFERENCES `carrito_producto` (`id`),
-  ADD CONSTRAINT `carrito_carritoitem_usuario_id_e51ddfe6_fk_auth_user_id` FOREIGN KEY (`usuario_id`) REFERENCES `auth_user` (`id`);
+  ADD CONSTRAINT `fk_content_type` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
+  ADD CONSTRAINT `fk_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `auth_user` (`id`);
 
 --
 -- Filtros para la tabla `computacion_cooler`
@@ -1951,18 +2153,29 @@ ALTER TABLE `encuesta_encuesta`
   ADD CONSTRAINT `encuesta_encuesta_usuario_id_dd006a7a_fk_auth_user_id` FOREIGN KEY (`usuario_id`) REFERENCES `auth_user` (`id`);
 
 --
--- Filtros para la tabla `usuario_menurol`
+-- Filtros para la tabla `usuario_favoritoproducto`
 --
-ALTER TABLE `usuario_menurol`
-  ADD CONSTRAINT `usuario_menurol_menu_id_515bc9c5_fk_usuario_menu_id` FOREIGN KEY (`menu_id`) REFERENCES `usuario_menu` (`id`),
-  ADD CONSTRAINT `usuario_menurol_rol_id_e78188dd_fk_usuario_rol_id` FOREIGN KEY (`rol_id`) REFERENCES `usuario_rol` (`id`);
+ALTER TABLE `usuario_favoritoproducto`
+  ADD CONSTRAINT `usuario_favoritoprod_content_type_id_45a7caf7_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
+  ADD CONSTRAINT `usuario_favoritoproducto_perfil_id_53bf440b_fk_usuario_perfil_id` FOREIGN KEY (`perfil_id`) REFERENCES `usuario_perfil` (`id`);
 
 --
--- Filtros para la tabla `usuario_usuariorol`
+-- Filtros para la tabla `usuario_interes`
 --
-ALTER TABLE `usuario_usuariorol`
-  ADD CONSTRAINT `usuario_usuariorol_rol_id_3c19af4d_fk_usuario_rol_id` FOREIGN KEY (`rol_id`) REFERENCES `usuario_rol` (`id`),
-  ADD CONSTRAINT `usuario_usuariorol_usuario_id_48f9d5e9_fk_auth_user_id` FOREIGN KEY (`usuario_id`) REFERENCES `auth_user` (`id`);
+ALTER TABLE `usuario_interes`
+  ADD CONSTRAINT `usuario_interes_perfil_id_248aa740_fk_usuario_perfil_id` FOREIGN KEY (`perfil_id`) REFERENCES `usuario_perfil` (`id`);
+
+--
+-- Filtros para la tabla `usuario_perfil`
+--
+ALTER TABLE `usuario_perfil`
+  ADD CONSTRAINT `usuario_perfil_user_id_8bc186fc_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
+
+--
+-- Filtros para la tabla `usuario_usuarioextra`
+--
+ALTER TABLE `usuario_usuarioextra`
+  ADD CONSTRAINT `usuario_usuarioextra_usuario_id_3c7b9629_fk_auth_user_id` FOREIGN KEY (`usuario_id`) REFERENCES `auth_user` (`id`);
 
 --
 -- Filtros para la tabla `venta_detalleventa`

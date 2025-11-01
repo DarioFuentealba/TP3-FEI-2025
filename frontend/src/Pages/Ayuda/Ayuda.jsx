@@ -27,8 +27,8 @@ const Ayuda = () => {
                 Si no encontraste la respuesta que buscabas, podés contactarnos a través de:
                 </p>
                 <ul className="list-disc list-inside">
-                <li>Correo electrónico: <a href="mailto:soporte@powertech.com" className="text-[#00FF84] underline">soporte@powertech.com</a></li>
-                <li>Teléfono: 011-1234-5678</li>
+                <li>Correo electrónico: <a href="mailto:soporte@powertech.com" className="text-[#0000EE] dark:text-[#00FF84] underline">soporte@powertech.com</a></li>
+                <li>Teléfono: 299-412-3456</li>
                 <li>Chat en línea disponible en el sitio web (de lunes a viernes de 9 a 18 hs)</li>
                 </ul>
             </section>

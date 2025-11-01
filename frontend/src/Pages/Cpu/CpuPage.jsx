@@ -26,9 +26,9 @@ export default function CpuPage() {
           name: "subcategoria_id",
           label: "Subcategoría",
           type: "select",
-          optionsResource: "subcategorias",
+          optionsResource: "sub_categorias",
         },
-        { name: "foto", label: "Foto", type: "file" },
+        { name: "foto", label: "Foto", type: "file",accept:"image/*" },
       ]}
     />
   );

@@ -7,7 +7,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../../api/auth";
+import { loginUser, getUsuarioActual } from "../../api/auth";
 import { useUser } from "../../context/UserContext";
 import { parseJwt } from "../../utils/jwt";
 import IconoRazer from "../../Components/Icono/Marca/IconoRazer/IconoRazer";
@@ -39,10 +39,19 @@ export default function Login() {
 
     // ✅ Usamos la función del contexto para guardar sesión
     login(access, refresh);
+    const usuario = await getUsuarioActual();
 
     // ✅ Redirige al perfil
-    const decoded = parseJwt(access);
-    navigate(`/perfil/${decoded.user_id}`);
+    //const decoded = parseJwt(access);
+    //console.log('DATA=> ',usuario);
+    if(usuario.is_superuser){
+
+      navigate(`/administrador/${usuario.id}`);
+    }
+    else{
+
+      navigate(`/perfil/${usuario.id}`);
+    }
 
   } catch (error) {
     setApiError(error.response?.data?.detail || "Error con la conexión a la BD");

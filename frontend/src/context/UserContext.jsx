@@ -13,16 +13,24 @@ export const UserProvider = ({ children }) => {
 
     if (access && refresh) {
       const decoded = parseJwt(access);
-      setUser({ id: decoded.user_id, username: decoded.username,access,refresh, });
+     // console.log("Decoded token:", decoded); // 👈 esto te mostrará si llegan los datos
+      setUser({
+        id: decoded.user_id,
+        username: decoded.username,
+        access,
+        refresh,
+        isAdm: decoded.is_superuser,
+      });
     }
-    setCheckingAuth(false); // 👈 Marca que ya verificó el token
+    setCheckingAuth(false);
   }, []);
 
+  
   const login = (access, refresh) => {
     localStorage.setItem("access", access);
     localStorage.setItem("refresh", refresh);
     const decoded = parseJwt(access);
-    setUser({ id: decoded.user_id, username: decoded.username,access,refresh });
+    setUser({ id: decoded.user_id, username: decoded.username,access,refresh, isAdm:decoded.is_superuser });
   };
 
   const logout = () => {

@@ -36,7 +36,11 @@ class Producto(models.Model):
 # COMPONENTES DE LA TIENDA  DE COMPUTACION 
 class Motherboard(Producto):
     memoria = models.CharField(max_length=200)
-    socket = models.CharField(max_length=200)
+    socket_memoria = models.CharField(max_length=200)
+    socket_gpu = models.CharField(max_length=200)
+    socket_sata_disco = models.CharField(max_length=200)
+    socket_M2_disco = models.CharField(max_length=200)
+    socket_cpu = models.CharField(max_length=200)
     sonido = models.CharField(max_length=200)
     puerto_sata = models.CharField(max_length=200)
     ranura_ram = models.CharField(max_length=200)
@@ -81,6 +85,7 @@ class Gpu(Producto):
     memoria_velocidad = models.CharField(max_length=200)
     resolucion_max = models.CharField(max_length=200)
     refrigeracion = models.CharField(max_length=200)
+    socket_gpu = models.CharField(max_length=200)
     foto1 = models.ImageField(upload_to='Componentes/PlacaVideo/', null=True, blank=True)
     foto2 = models.ImageField(upload_to='Componentes/PlacaVideo/', null=True, blank=True)
     foto3 = models.ImageField(upload_to='Componentes/PlacaVideo/', null=True, blank=True)
@@ -106,6 +111,7 @@ class Ram(Producto):
 
 class Disco(Producto):
     capacidad_gb = models.CharField(max_length=200)
+    socket_disco = models.CharField(max_length=100)
     consumo = models.DecimalField(max_digits=10, decimal_places=2)
     velocidad = models.CharField(max_length=150)
     conexion = models.CharField(max_length=150)
@@ -119,6 +125,7 @@ class Fuente(Producto):
     consumo = models.DecimalField(max_digits=7, decimal_places=2)
     eficiencia = models.CharField(max_length=150)
     ventilador = models.CharField(max_length=150)
+    socket_fuente_gpu = models.CharField(max_length=200)
     foto1 = models.ImageField(upload_to='Componentes/Fuente/', null=True, blank=True)
     foto2 = models.ImageField(upload_to='Componentes/Fuente/', null=True, blank=True)
     foto3 = models.ImageField(upload_to='Componentes/Fuente/', null=True, blank=True)
@@ -197,6 +204,7 @@ class Cooler(Producto):
     consumo=models.DecimalField(max_digits=5, decimal_places=3)
     cooler_incluidos=models.IntegerField()
     iluminacion=models.CharField(max_length=150)
+    socket_cpu = models.CharField(max_length=150)
     foto1= models.ImageField(upload_to='Componentes/Cooler/', null=True, blank=True)
     foto2= models.ImageField(upload_to='Componentes/Cooler/', null=True, blank=True)
     foto3= models.ImageField(upload_to='Componentes/Cooler/', null=True, blank=True)
